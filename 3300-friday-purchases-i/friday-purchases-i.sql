@@ -8,6 +8,6 @@ FROM
 WHERE
     DAYOFWEEK(purchase_date) = 6
 GROUP BY
-    week_of_month, purchase_date
+    week_of_month
 ORDER BY
     week_of_month;
