@@ -7,7 +7,7 @@ WITH UserSpending AS (
     FROM 
         Sales s
     JOIN 
-        Product p ON s.product_id = p.product_id
+        Product p USING(product_id)
     GROUP BY 
         s.user_id, s.product_id
 )
