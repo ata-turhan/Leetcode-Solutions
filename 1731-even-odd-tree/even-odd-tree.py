@@ -8,31 +8,29 @@ class Solution:
     def isEvenOddTree(self, root: Optional[TreeNode]) -> bool:
         if not root:
             return True
+        
         q = deque([root])
         even = True
+        
         while q:
-            if even:
-                prev = 0
-            else:
-                prev = 1e7
-            length = len(q)
-            for _ in range(length):
+            level_length = len(q)
+            prev = float('-inf') if even else float('inf')
+            
+            for _ in range(level_length):
                 node = q.popleft()
-                if even:
-                    if node.val % 2 == 1 and prev < node.val:
-                        prev = node.val
-                    else:
-                        return False
+                if (even and node.val % 2 == 1 and prev < node.val) or \
+                (not even and node.val % 2 == 0 and prev > node.val):
+                    prev = node.val
                 else:
-                    if node.val % 2 == 0 and prev > node.val:
-                        prev = node.val
-                    else:
-                        return False
+                    return False
+                
                 if node.left:
                     q.append(node.left)
                 if node.right:
                     q.append(node.right)
+            
             even = not even
+        
         return True
 
         
