@@ -1,0 +1,1 @@
+<h2>minimum-length-of-string-after-deleting-similar-ends Notes</h2><hr>[ Time taken: 10 m 40 s ]
