@@ -1,8 +1,13 @@
 class Solution:
     def customSortString(self, order: str, s: str) -> str:
-        sort_order = defaultdict(int)
-        for i, char in enumerate(order):
-            sort_order[char] = i
-        return "".join(sorted(list(s), key=lambda char:sort_order[char]))
+        order_index = defaultdict(int)
 
-        
+        # Create a dictionary to store the index of each character in the order string
+        for i, char in enumerate(order):
+            order_index[char] = i
+
+        # Sort the characters in string s based on their indices in the order string
+        sorted_s = sorted(s, key=lambda char: order_index[char])
+
+        # Join the sorted characters to form the final string
+        return "".join(sorted_s)
