@@ -1,4 +1,21 @@
-# Write your MySQL query statement below
-with ranked as (select user_id, gender, rank() over (partition by gender order by user_id) + (case when gender = "female" then 0.1 when gender = "other" then 0.2 else 0.3 end) as ranks from genders)
+WITH ranked AS (
+    SELECT 
+        user_id, 
+        gender, 
+        RANK() OVER (PARTITION BY gender ORDER BY user_id) + 
+        (CASE 
+            WHEN gender = 'female' THEN 0.1 
+            WHEN gender = 'other' THEN 0.2 
+            ELSE 0.3 
+        END) AS ranks 
+    FROM 
+        genders
+)
 
-select user_id, gender from ranked order by ranks
+SELECT 
+    user_id, 
+    gender 
+FROM 
+    ranked 
+ORDER BY 
+    ranks;
