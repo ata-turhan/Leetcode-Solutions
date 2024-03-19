@@ -13,11 +13,13 @@ class Solution:
             min_time, count, task = heappop(heap)
             if min_time > time:
                 heappush(heap, (min_time, count, task))
+                time = min_time
+                continue
             else:
                 if count < -1:
                     min_time += n + 1
                     count += 1
                     heappush(heap, (min_time, count, task))
-            time += 1
+                time += 1
         return time
         
