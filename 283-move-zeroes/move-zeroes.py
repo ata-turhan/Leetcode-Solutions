@@ -6,7 +6,7 @@ class Solution:
         zero_count = nums.count(0)
         if zero_count == 0:
             return
-            
+        
         k = 0
         for i in range(len(nums)):
             if nums[i] != 0:
