@@ -63,7 +63,6 @@ class Solution:
         else:
             left_end.next = right_start
         
-        curr_ptr = head
         return is_palindrome
         
         
