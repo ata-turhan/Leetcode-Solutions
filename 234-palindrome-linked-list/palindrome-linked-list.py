@@ -7,59 +7,64 @@ class Solution:
     def isPalindrome(self, head: Optional[ListNode]) -> bool:
         if not head.next:
             return True
-        middle_node = None
-        prev_node = ListNode()
-        prev_node.next = head
-        slow = head
-        fast = head
-        while fast and fast.next:
-            prev_node = slow
-            slow = slow.next
-            fast = fast.next.next 
-        left = prev_node
-        if fast:
-            middle_node = slow
-            right = slow.next
-            slow = slow.next
-        else:
-            right = slow      
-  
-        prev_node.next = None
-        prev_node = None
         
-        while slow:
-            nxt = slow.next
-            slow.next = prev_node
-            prev_node = slow
-            slow = nxt
-        tail = prev_node
-        cur = head
-        res = True
-        while cur:
-            if cur.val != tail.val:
-                res = False
-                break
-            cur = cur.next
-            tail = tail.next
-
-        prev = None
-        cur = prev_node
-        while cur:
-            nxt = cur.next
-            cur.next = prev
-            prev = cur
-            cur = nxt
-        if middle_node:
-            left.next = middle_node
-            middle_node.next = right
+        middle_node = None
+        prev_end_node = ListNode()
+        prev_end_node.next = head
+        slow_ptr = head
+        fast_ptr = head
+        
+        while fast_ptr and fast_ptr.next:
+            prev_end_node = slow_ptr
+            slow_ptr = slow_ptr.next
+            fast_ptr = fast_ptr.next.next 
+        
+        left_end = prev_end_node
+        
+        if fast_ptr:
+            middle_node = slow_ptr
+            right_start = slow_ptr.next
+            slow_ptr = slow_ptr.next
         else:
-            left.next = right
-        cur = head
-        while cur:
-            print(cur.val, end=" ")
-            cur = cur.next
-        return res
+            right_start = slow_ptr      
+    
+        prev_end_node.next = None
+        prev_end_node = None
+        
+        while slow_ptr:
+            next_node = slow_ptr.next
+            slow_ptr.next = prev_end_node
+            prev_end_node = slow_ptr
+            slow_ptr = next_node
+        
+        tail_ptr = prev_end_node
+        curr_ptr = head
+        is_palindrome = True
+        
+        while curr_ptr:
+            if curr_ptr.val != tail_ptr.val:
+                is_palindrome = False
+                break
+            curr_ptr = curr_ptr.next
+            tail_ptr = tail_ptr.next
 
+        prev_ptr = None
+        curr_ptr = prev_end_node
+        
+        while curr_ptr:
+            next_node = curr_ptr.next
+            curr_ptr.next = prev_ptr
+            prev_ptr = curr_ptr
+            curr_ptr = next_node
+        
+        if middle_node:
+            left_end.next = middle_node
+            middle_node.next = right_start
+        else:
+            left_end.next = right_start
+        
+        curr_ptr = head
+        return is_palindrome
         
         
         
