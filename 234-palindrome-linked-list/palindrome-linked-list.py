@@ -15,12 +15,18 @@ class Solution:
         while fast and fast.next:
             prev_node = slow
             slow = slow.next
-            fast = fast.next.next  
-        middle_node = slow
+            fast = fast.next.next 
+        left = prev_node
+        if fast:
+            middle_node = slow
+            right = slow.next
+            slow = slow.next
+        else:
+            right = slow      
+  
         prev_node.next = None
         prev_node = None
-        if fast:
-            slow = slow.next
+        
         while slow:
             nxt = slow.next
             slow.next = prev_node
@@ -35,6 +41,23 @@ class Solution:
                 break
             cur = cur.next
             tail = tail.next
+
+        prev = None
+        cur = prev_node
+        while cur:
+            nxt = cur.next
+            cur.next = prev
+            prev = cur
+            cur = nxt
+        if middle_node:
+            left.next = middle_node
+            middle_node.next = right
+        else:
+            left.next = right
+        cur = head
+        while cur:
+            print(cur.val, end=" ")
+            cur = cur.next
         return res
 
         
