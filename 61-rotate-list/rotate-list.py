@@ -40,7 +40,7 @@ class Solution:
         new_head = prev.next
         prev.next = None
         
-        # Connect the original tail to the original head to form a circular list
+        # Connect the original tail to the original head to form a rotated list
         tail.next = head
         
         # Return the new head of the rotated list
