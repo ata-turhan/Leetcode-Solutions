@@ -16,6 +16,8 @@ class Solution:
         visited = set()
         visited.add("0000")
 
+        deadends = set(deadends)
+
         # Perform BFS
         while queue:
             node, dist = queue.popleft()
