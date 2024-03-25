@@ -1,10 +1,14 @@
 class Solution:
     def findDuplicates(self, nums: List[int]) -> List[int]:
         res = []
-        for i in range(len(nums)):
-            if nums[abs(nums[i])-1] < 0:
-                res.append(abs(nums[i]))
+        for num in nums:
+            # Get the absolute value of the current number
+            abs_num = abs(num)
+            # Check if the element at the index of the absolute value minus 1 is negative
+            # If it is, it means this element has been encountered before, so it's a duplicate
+            if nums[abs_num - 1] < 0:
+                res.append(abs_num)
             else:
-                nums[abs(nums[i])-1] = -abs(nums[abs(nums[i])-1])
+                # Mark the element at the index of the absolute value minus 1 as negative
+                nums[abs_num - 1] *= -1
         return res
-        
