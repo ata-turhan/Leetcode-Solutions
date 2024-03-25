@@ -8,7 +8,7 @@ class Solution:
         low, high = 0, nums[-1] - nums[0]
         
         # Perform binary search on the range of possible distances.
-        while low < high:
+        while low <= high:
             mid = (low + high) // 2
             count = 0
             j = 0
@@ -22,7 +22,7 @@ class Solution:
                 low = mid + 1
             else:
                 # If the count is greater than or equal to k, adjust the upper bound of the search range.
-                high = mid
+                high = mid - 1
         
         # Return the smallest distance found.
         return low
