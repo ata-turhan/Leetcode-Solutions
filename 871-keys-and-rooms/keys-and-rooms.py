@@ -1,18 +1,19 @@
+from collections import deque
+from typing import List
+
 class Solution:
     def canVisitAllRooms(self, rooms: List[List[int]]) -> bool:
-        keys = set()
-        visited = set()
-        q = deque()
-        q.append(0)
-        visited.add(0)
+        visited_rooms = set()
+        visited_rooms.add(0)
 
-        while q:
-            room = q.popleft()
-            for key in rooms[room]:
-                keys.add(key)
-                if key not in visited:
-                    visited.add(key)
-                    q.append(key)
+        queue = deque()
+        queue.append(0)
 
-        return len(visited) == len(rooms)
-        
+        while queue:
+            current_room = queue.popleft()
+            for key in rooms[current_room]:
+                if key not in visited_rooms:
+                    visited_rooms.add(key)
+                    queue.append(key)
+
+        return len(visited_rooms) == len(rooms)
