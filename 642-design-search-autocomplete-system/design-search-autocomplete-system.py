@@ -56,10 +56,3 @@ class AutocompleteSystem:
 
         for char, child_node in node.children.items():
             self.dfs(child_node, path + char, heap)  # Recursively explore child nodes
-
-
-    def ascii_code(self, string):
-        res = []
-        for char in string:
-            res.append(ord(char))
-        return "".join(res)
