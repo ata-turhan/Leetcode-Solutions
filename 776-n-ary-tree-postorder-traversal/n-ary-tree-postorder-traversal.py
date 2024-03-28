@@ -17,13 +17,13 @@ class Solution:
         # Initialize result list
         res = []
 
-        # Perform iterative preorder traversal
+        # Perform iterative postorder traversal
         while stack:
             # Pop the top node from the stack
             node = stack.pop()
             # Append the node's value to the result list
             res.append(node.val)
-            # Add children of the node to the stack in reverse order
+            # Add children of the node to the stack
             stack.extend(node.children)
-        
+        # Return the result list in the reverse order for correct postorder traversal
         return res[::-1]
