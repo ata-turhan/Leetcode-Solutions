@@ -38,8 +38,16 @@ class UnionFind:
 
 class Solution:
     def validTree(self, n: int, edges: List[List[int]]) -> bool:
+        # Initialize UnionFind data structure
         union_find = UnionFind(n)
-        for a, b in edges:
-            if not union_find.union(a, b):
+        
+        # Iterate through each edge
+        for node1, node2 in edges:
+            # Union the nodes if they are not already in the same set
+            if not union_find.union(node1, node2):
+                # If union returns False, it means the nodes are already in the same set, forming a cycle
+                # Hence, the graph cannot be a valid tree
                 return False
+        
+        # After processing all edges, check if there is exactly one connected component
         return union_find.get_component_count() == 1
