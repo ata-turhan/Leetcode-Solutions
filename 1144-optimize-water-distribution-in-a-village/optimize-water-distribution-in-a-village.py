@@ -1,15 +1,20 @@
 class UnionFind:
     def __init__(self, n):
-        self.parent = [i for i in range(n)]
-        self.rank = [1] * n
+        # Initialize the UnionFind data structure with arrays for parent pointers and ranks
+        self.parent = [i for i in range(n)]  # Each node is initially its own parent
+        self.rank = [1] * n  # Initialize the rank of each node to 1
 
     def find(self, x):
+        # Find the root of the set containing element x (with path compression)
         if x != self.parent[x]:
-            self.parent[x] = self.find(self.parent[x])
+            self.parent[x] = self.find(self.parent[x])  # Path compression
         return self.parent[x]
 
     def union(self, x, y):
+        # Union two elements x and y
         x_root, y_root = self.find(x), self.find(y)
+        
+        # Union by rank: attach the smaller tree to the root of the larger tree
         if x_root != y_root:
             if self.rank[x_root] > self.rank[y_root]:
                 self.parent[y_root] = x_root
