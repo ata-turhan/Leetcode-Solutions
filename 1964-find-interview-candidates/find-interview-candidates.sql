@@ -1,19 +1,48 @@
-with gold_medals as (
-    select user_id from users join contests on user_id = gold_medal group by user_id having count(contest_id) >= 3 
+WITH GoldMedals AS (
+    SELECT 
+        user_id 
+    FROM 
+        users 
+    JOIN 
+        contests ON user_id = gold_medal 
+    GROUP BY 
+        user_id 
+    HAVING 
+        COUNT(contest_id) >= 3 
 ),
-all_medals as (
-    select user_id, contest_id as cur, lag(contest_id, 1) over (partition by user_id order by contest_id)  as prev, lead(contest_id, 1) over (partition by user_id order by contest_id) as next
-    from users join contests on user_id = gold_medal or user_id = silver_medal  or user_id = bronze_medal
+AllMedals AS (
+    SELECT 
+        user_id, 
+        contest_id AS cur, 
+        LAG(contest_id, 1) OVER (PARTITION BY user_id ORDER BY contest_id) AS prev, 
+        LEAD(contest_id, 1) OVER (PARTITION BY user_id ORDER BY contest_id) AS next
+    FROM 
+        users 
+    JOIN 
+        contests ON user_id = gold_medal OR user_id = silver_medal OR user_id = bronze_medal
 ),
-consecutive_medals as (
-select distinct user_id from all_medals where cur = prev + 1 and cur = next - 1
+ConsecutiveMedals AS (
+    SELECT 
+        DISTINCT user_id 
+    FROM 
+        AllMedals 
+    WHERE 
+        cur = prev + 1 AND cur = next - 1
 )
-
-select name, mail from users where user_id in (
-    select user_id from gold_medals
-    union
-    select user_id from consecutive_medals
-)
-
-
-
+SELECT 
+    name, 
+    mail 
+FROM 
+    users 
+WHERE 
+    user_id IN (
+        SELECT 
+            user_id 
+        FROM 
+            GoldMedals
+        UNION
+        SELECT 
+            user_id 
+        FROM 
+            ConsecutiveMedals
+    );
