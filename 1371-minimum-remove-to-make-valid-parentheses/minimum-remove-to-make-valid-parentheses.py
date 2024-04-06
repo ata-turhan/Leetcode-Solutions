@@ -1,31 +1,41 @@
 class Solution:
     def minRemoveToMakeValid(self, s: str) -> str:
-        op, cl = 0, 0
-        stack = []
+        open_count, close_count = 0, 0  # Initialize counters for open and close parentheses
+        stack = []  # Initialize a stack to track parentheses positions
+        
+        # Iterate through each character in the string
         for char in s:
-            stack.append(char)
+            stack.append(char)  # Add the current character to the stack
+            
+            # Update open and close parentheses counts
             if char == "(":
-                op += 1
+                open_count += 1
             elif char == ")":
-                cl += 1
-            if cl > op:
+                close_count += 1
+            
+            # If the number of close parentheses exceeds the number of open parentheses,
+            # remove the excess close parentheses from the stack
+            if close_count > open_count:
                 stack.pop()
-                cl -= 1
-        if op == cl:
+                close_count -= 1
+        
+        # If the number of open and close parentheses is equal, return the stack as a string
+        if open_count == close_count:
             return "".join(stack)
         else:
-            extra_open = op - cl
-            res = []
-            for i in range(len(stack)-1, -1, -1):
+            extra_open = open_count - close_count  # Calculate the extra open parentheses
+            result = []  # Initialize a list to store the resulting characters
+            
+            # Iterate through the stack in reverse order
+            for i in range(len(stack) - 1, -1, -1):
+                # If a closing parenthesis is encountered, reduce the count of extra open parentheses
                 if stack[i] == "(":
                     extra_open -= 1
+                    # If all extra open parentheses have been matched, add characters to the result list
                     if extra_open == 0:
-
-                        res.extend(stack[:i][::-1])
+                        result.extend(stack[:i][::-1])  # Reverse and add characters from the stack
                         break
                 else:
-                    res.append(stack[i])
-            return "".join(res[::-1])
-                
+                    result.append(stack[i])  # Add non-parentheses characters to the result list
             
-        
+            return "".join(result[::-1])  # Reverse and return the result list as a string
