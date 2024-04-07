@@ -11,7 +11,7 @@ SharedFriendPairs AS (
     SELECT A1.user_id1 AS user_id1,
         A2.user_id1 AS user_id2
     FROM AllPairs A1
-    JOIN AllPairs A2 ON A1.user_id2 = A2.user_id2
+    JOIN AllPairs A2 ON A1.user_id1 != A2.user_id1 and A1.user_id2 = A2.user_id2
 )
 -- Select pairs of users who are friends with each other and have no mutual friends
 SELECT 
