@@ -3,7 +3,7 @@
 -- Create a common table expression (CTE) to get all pairs of friends
 WITH AllPairs AS (
     SELECT user_id1, user_id2 FROM Friends
-    UNION ALL 
+    UNION 
     SELECT user_id2, user_id1 FROM Friends
 ),
 -- Create a common table expression (CTE) to find pairs of users who have mutual friends
