@@ -1,9 +1,20 @@
-# Write your MySQL query statement below
-with neg_bal as (
-    select paid_by, -sum(amount) as bal from transactions group by paid_by
+-- Common Table Expression to calculate negative balances for users who paid
+WITH neg_bal AS (
+    SELECT paid_by, -SUM(amount) AS bal FROM transactions GROUP BY paid_by
 ),
-pos_bal as (
-    select paid_to, sum(amount) as bal from transactions group by paid_to
+-- Common Table Expression to calculate positive balances for users who received payments
+pos_bal AS (
+    SELECT paid_to, SUM(amount) AS bal FROM transactions GROUP BY paid_to
 )
-
-select user_id, user_name, (credit + ifnull(n.bal, 0) + ifnull(p.bal, 0)) as credit, if((credit + ifnull(n.bal, 0) + ifnull(p.bal, 0)) < 0, "Yes", "No") as credit_limit_breached from   users as u left join neg_bal as n on u.user_id = n.paid_by left join pos_bal as p on u.user_id = p.paid_to
+-- Main query to retrieve user information along with their credit balances and whether their credit limit is breached
+SELECT 
+    u.user_id, -- User ID
+    u.user_name, -- User Name
+    (u.credit + IFNULL(n.bal, 0) + IFNULL(p.bal, 0)) AS credit, -- Total credit balance
+    IF((u.credit + IFNULL(n.bal, 0) + IFNULL(p.bal, 0)) < 0, "Yes", "No") AS credit_limit_breached -- Whether credit limit is breached
+FROM   
+    users AS u -- Users table
+LEFT JOIN 
+    neg_bal AS n ON u.user_id = n.paid_by -- Joining with negative balances
+LEFT JOIN 
+    pos_bal AS p ON u.user_id = p.paid_to -- Joining with positive balances
