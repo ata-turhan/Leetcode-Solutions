@@ -1,19 +1,15 @@
-# Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
 class Solution:
     def sumOfLeftLeaves(self, root: Optional[TreeNode]) -> int:
-        def sum_left_leaves(parent, child):
-            if child is None:
+        # Helper function to perform depth-first search (DFS)
+        def dfs(node, is_left):
+            # Base case: If node is None, return 0
+            if not node:
                 return 0
-            if child.left is None and child.right is None:
-                if parent is not None and parent.left == child:
-                    return child.val
-            parent = child
-            return sum_left_leaves(parent, parent.left) + sum_left_leaves(parent, parent.right) 
+            # If node is a leaf and a left child, return its value
+            if not node.left and not node.right:
+                return node.val if is_left else 0
+            # Recursively calculate sum of left leaves and right leaves
+            return dfs(node.left, True) + dfs(node.right, False)
 
-        return sum_left_leaves(None, root)
-        
+        # Start DFS traversal from the root node with is_left = False
+        return dfs(root, False)
