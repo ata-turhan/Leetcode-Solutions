@@ -1,31 +1,44 @@
 class Solution:
     def islandPerimeter(self, grid: List[List[int]]) -> int:
+        # Define the possible moves (up, right, down, left)
         moves = [
             [0, 1],
             [1, 0],
             [0, -1],
             [-1, 0],
         ]
-        m = len(grid)
-        n = len(grid[0])
-        def dfs(visited, i , j):
-            res = 0
-            for move in moves:
-                ni, nj = i + move[0], j + move[1]
-                if ni not in range(m) or nj not in range(n) or grid[ni][nj] == 0:
-                    res += 1
-            visited.add((i, j))
-            for move in moves:
-                ni, nj = i + move[0], j + move[1]
-                if ni in range(m) and nj in range(n) and (ni, nj) not in visited and grid[ni][nj] == 1:
-                    res += dfs(visited, ni, nj)
-            return res
-
-
-
-        visited = set()
-        for i in range(len(grid)):
-            for j in range(len(grid[0])):
-                if grid[i][j] == 1:
-                    return dfs(visited, i, j)
+        m = len(grid)  # Number of rows
+        n = len(grid[0])  # Number of columns
         
+        def dfs(i, j, visited):
+            """
+            Depth-first search to explore the island and calculate perimeter.
+
+            Args:
+                i (int): Row index.
+                j (int): Column index.
+                visited (set): Set of visited cells.
+            """
+            if (i, j) in visited:  # Skip visited cells
+                return 0
+            
+            perimeter = 0  # Initialize perimeter for this cell
+            visited.add((i, j))  # Mark current cell as visited
+            # Check all four directions for water or out of bounds
+            for move in moves:
+                ni, nj = i + move[0], j + move[1]
+                if ni < 0 or ni >= m or nj < 0 or nj >= n or grid[ni][nj] == 0:
+                    perimeter += 1  # Increment perimeter for water or boundary
+                else:
+                    perimeter += dfs(ni, nj, visited)  # Recursively explore land cells
+            return perimeter
+        
+        # Initialize visited set
+        visited = set()
+        
+        # Iterate through the grid to find the first land cell
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == 1:
+                    return dfs(i, j, visited)  # Start DFS from the first land cell and return perimeter
+
