@@ -1,19 +1,19 @@
 -- Generate weeks for Premium members
 WITH RECURSIVE premium_weeks AS (
     SELECT 1 AS week_of_month, 'Premium' AS membership 
-    UNION
+    UNION ALL
     SELECT week_of_month + 1, 'Premium' AS membership FROM premium_weeks WHERE week_of_month < 4
 ),
 -- Generate weeks for VIP members
 vip_weeks AS (
     SELECT 1 AS week_of_month, 'VIP' AS membership 
-    UNION
+    UNION ALL
     SELECT week_of_month + 1, 'VIP' AS membership FROM vip_weeks WHERE week_of_month < 4
 ),
 -- Combine weeks for Premium and VIP members
 all_weeks AS (
     SELECT * FROM premium_weeks
-    UNION
+    UNION ALL
     SELECT * FROM vip_weeks
 )
 -- Main query to calculate total amount spent by Premium and VIP members for each week of the month
