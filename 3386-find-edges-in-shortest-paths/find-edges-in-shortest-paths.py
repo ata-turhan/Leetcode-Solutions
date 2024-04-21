@@ -4,7 +4,7 @@ from heapq import heappop, heappush
 class Solution:
     def findAnswer(self, n: int, edges: List[List[int]]) -> List[bool]:
         """
-        Function to find the answers for each edge in the graph.
+        Function to determine if each edge in the graph is part of the shortest path.
 
         Args:
             n: The number of nodes in the graph.
@@ -39,16 +39,16 @@ class Solution:
             # Main loop of Dijkstra's algorithm.
             while pq:
                 # Pop the node with the smallest distance from the priority queue.
-                x, u = heappop(pq)
+                d, u = heappop(pq)
                 # If the distance recorded for this node is still valid, process its neighbors.
-                if dist[u] == x:
+                if dist[u] == d:
                     # Iterate through the neighbors of the current node.
                     for v, w in graph[u]:
                         # Update the distance to the neighbor if a shorter path is found.
-                        if x + w < dist[v]:
-                            dist[v] = x + w
+                        if d + w < dist[v]:
+                            dist[v] = d + w
                             # Add the neighbor to the priority queue with its updated distance.
-                            heappush(pq, (x + w, v))
+                            heappush(pq, (d + w, v))
             # Return the shortest distances from the source node to all other nodes.
             return dist 
         
@@ -58,10 +58,11 @@ class Solution:
         # If there is no path from node 0 to node n-1, return a list of False values for all edges.
         if dist0[n - 1] == float('inf'):
             return [False] * len(edges)
-        ans = []
+        results = []
         # Iterate through each edge and check if it is part of the shortest path.
         for u, v, w in edges:
             # Check if the sum of distances from source to u, v to destination, and u to v (or vice versa) equals the distance from source to destination.
-            ans.append(dist0[u] + w + dist1[v] == dist0[n - 1] or dist0[v] + w + dist1[u] == dist0[n - 1])
+            isPartOfShortestPath = dist0[u] + w + dist1[v] == dist0[n - 1] or dist0[v] + w + dist1[u] == dist0[n - 1]
+            results.append(isPartOfShortestPath)
         # Return the list of answers for each edge.
-        return ans
+        return results
