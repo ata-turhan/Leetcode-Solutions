@@ -53,7 +53,7 @@ class Solution:
             for r in range(n):
                 cnt[c][grid[r][c]] += 1
         # Memoization table for dynamic programming
-        dp = [[-1] * 11 for _ in range(m+1)]
+        dp = [[-1] * 11 for _ in range(m)]
         # Find the minimum operations starting from column index 0 and previous digit as 10 (invalid).
         ans = self.solve(0, 10, n, m, cnt, dp)
         return ans
