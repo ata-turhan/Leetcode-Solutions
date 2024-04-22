@@ -15,9 +15,8 @@ var promiseAll = function(functions) {
                     result => {
                         res[idx] = result;
                         count++; // Increment counter when promise resolves
-                        if (count === functions.length) {
+                        if (count === functions.length) 
                             resolve(res); // Resolve with results array when all promises are resolved
-                        }
                     }
                 ).catch(
                     err => reject(err) // Reject if any promise rejects
