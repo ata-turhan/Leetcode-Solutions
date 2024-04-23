@@ -9,7 +9,7 @@ class Solution:
         Returns:
         - Reversed integer or 0 if the result overflows
         """
-        INT_MIN, INT_MAX = -2**31, 2**31 - 1
+        INT_MAX = 2**31 - 1
         
         # Handle negative numbers
         sign = -1 if x < 0 else 1
