@@ -1,9 +1,17 @@
+from typing import List
+
 class Solution:
     def reverseString(self, s: List[str]) -> None:
         """
-        Do not return anything, modify s in-place instead.
+        Reverses the given list of characters in-place.
+
+        Args:
+        - s: List of characters
+
+        Returns:
+        - None
         """
-        for i in range(len(s)//2):
-            s[i], s[len(s)-1-i] = s[len(s)-1-i], s[i] 
-        #s = s.reverse()
-        
+        # Iterate through the first half of the list
+        for i in range(len(s) // 2):
+            # Swap characters at opposite positions
+            s[i], s[len(s) - 1 - i] = s[len(s) - 1 - i], s[i]
