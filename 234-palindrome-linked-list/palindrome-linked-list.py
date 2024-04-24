@@ -27,7 +27,7 @@ class Solution:
         # Compare values of nodes from both halves of the linked list
         start = head
         end = prev
-        while start and end:
+        while end:
             if start.val != end.val:
                 return False
             start = start.next
