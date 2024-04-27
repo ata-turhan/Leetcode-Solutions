@@ -1,2 +1,3 @@
 # Leetcode-Solutions
-Collection of LeetCode questions to ace the coding interview! - Created using [LeetHub v2](https://github.com/arunbhardwaj/LeetHub-2.0)
+
+Welcome to my LeetCode solutions repository! Here, you'll find my solutions to various LeetCode problems implemented in Python, organized by problem number and name, accompanied by a brief description and explanation of the approach used.
