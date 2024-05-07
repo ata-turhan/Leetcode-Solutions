@@ -1,9 +1,35 @@
-# Write your MySQL query statement below
-with cinema_with_rn as (
-    select seat_id, row_number() over (partition by free order by seat_id asc) as rn from cinema where free = 1
+-- Assign row numbers to free seats in the cinema
+WITH cinema_with_rn AS (
+    SELECT 
+        seat_id, 
+        ROW_NUMBER() OVER (PARTITION BY free ORDER BY seat_id ASC) AS rn 
+    FROM 
+        cinema 
+    WHERE 
+        free = 1
 ),
-consecutive_groups as (
-    select min(seat_id) as first_seat_id, max(seat_id) as last_seat_id, count(*) as consecutive_seats_len  from cinema_with_rn group by seat_id - rn
+-- Calculate consecutive groups of free seats
+consecutive_groups AS (
+    SELECT 
+        MIN(seat_id) AS first_seat_id, 
+        MAX(seat_id) AS last_seat_id, 
+        COUNT(*) AS consecutive_seats_len  
+    FROM 
+        cinema_with_rn 
+    GROUP BY 
+        seat_id - rn
 )
-
-select * from consecutive_groups where consecutive_seats_len = (select max(consecutive_seats_len) from consecutive_groups) order by first_seat_id asc
+-- Select consecutive groups with the maximum number of consecutive seats
+SELECT 
+    * 
+FROM 
+    consecutive_groups 
+WHERE 
+    consecutive_seats_len = (
+        SELECT 
+            MAX(consecutive_seats_len) 
+        FROM 
+            consecutive_groups
+    ) 
+ORDER BY 
+    first_seat_id ASC;
