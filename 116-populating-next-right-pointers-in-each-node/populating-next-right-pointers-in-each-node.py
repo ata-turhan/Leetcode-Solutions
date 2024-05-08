@@ -36,6 +36,5 @@ class Solution:
             # Connect nodes at the same level using the next pointer
             for i in range(length - 1):
                 level[i].next = level[i + 1]
-            level[length - 1].next = None
         
         return root
