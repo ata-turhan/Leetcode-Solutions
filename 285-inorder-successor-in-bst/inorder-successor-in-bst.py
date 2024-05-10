@@ -7,6 +7,24 @@ class TreeNode:
 
 class Solution:
     def inorderSuccessor(self, root: TreeNode, p: TreeNode) -> Optional[TreeNode]:
+        # Approach 1: Iterative Inorder Traversal
+        stack = []  # Initialize a stack for iterative inorder traversal
+        node = root  # Initialize node as the current node starting from root
+        while stack or node:
+            while node:
+                stack.append(node)  # Push nodes onto the stack until the leftmost node is reached
+                node = node.left
+            node = stack.pop()  # Pop the node from the stack
+            if node == p:  # Check if the current node is the kth smallest
+                if node.right:
+                    successor = node.right
+                    while successor.left:
+                        successor = successor.left 
+                    return successor
+                else:
+                    return stack.pop() if stack else None
+            node = node.right  # Move to the right child of the popped node
+
         # Function to find the node and its path from the root
         def find_node(root, p, path):
             if not root:
