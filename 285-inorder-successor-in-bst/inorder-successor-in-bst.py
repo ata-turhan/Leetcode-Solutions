@@ -15,16 +15,19 @@ class Solution:
                 stack.append(node)  # Push nodes onto the stack until the leftmost node is reached
                 node = node.left
             node = stack.pop()  # Pop the node from the stack
-            if node == p:  # Check if the current node is the kth smallest
+            if node == p:  # Check if the current node is the target node p
+                # If p has a right child, find the leftmost child of its right subtree
                 if node.right:
                     successor = node.right
                     while successor.left:
                         successor = successor.left 
                     return successor
+                # If p doesn't have a right child, return the parent from the stack
                 else:
                     return stack.pop() if stack else None
             node = node.right  # Move to the right child of the popped node
 
+        # Approach 2: Recursive approach
         # Function to find the node and its path from the root
         def find_node(root, p, path):
             if not root:
