@@ -1,8 +1,37 @@
-with bus_orders as (
-    select bus_id, arrival_time, row_number() over (order by arrival_time asc) as rn from buses
+-- CTE to assign row numbers to bus arrivals in ascending order of arrival time
+WITH bus_orders AS (
+    SELECT 
+        bus_id, 
+        arrival_time, 
+        ROW_NUMBER() OVER (ORDER BY arrival_time ASC) AS rn 
+    FROM 
+        buses
 ),
-bus_intervals as (
-    select b1.bus_id, b1.arrival_time, ifnull(b2.arrival_time, -1)  as prev_arrival_time from bus_orders as b1 left join bus_orders as b2 on b1.rn = b2.rn+1
+-- CTE to calculate the interval between consecutive bus arrivals
+bus_intervals AS (
+    SELECT 
+        b1.bus_id, 
+        b1.arrival_time, 
+        COALESCE(b2.arrival_time, -1) AS prev_arrival_time 
+    FROM 
+        bus_orders AS b1 
+    LEFT JOIN 
+        bus_orders AS b2 
+    ON 
+        b1.rn = b2.rn + 1
 )
-
-select bus_id, count(passenger_id) as passengers_cnt  from bus_intervals left join passengers on bus_intervals.prev_arrival_time < passengers.arrival_time and passengers.arrival_time <= bus_intervals.arrival_time group by bus_id order by bus_id asc;
+-- Query to count the number of passengers for each bus based on arrival times
+SELECT 
+    bus_id, 
+    COUNT(passenger_id) AS passengers_cnt  
+FROM 
+    bus_intervals 
+LEFT JOIN 
+    passengers 
+ON 
+    bus_intervals.prev_arrival_time < passengers.arrival_time 
+    AND passengers.arrival_time <= bus_intervals.arrival_time 
+GROUP BY 
+    bus_id 
+ORDER BY 
+    bus_id ASC;
