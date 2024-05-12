@@ -2,6 +2,22 @@ from typing import List
 
 class Solution:
     def maximumEnergy(self, energy: List[int], k: int) -> int:
+        # Create a copy of the energy list to store the dynamic programming values
+        dp = energy.copy()
+        
+        # Iterate backward through the energy list
+        for i in range(len(energy)-1, -1, -1):
+            # Calculate the cumulative energy starting from the current index
+            cumulative_energy = dp[i+k] if i + k < len(energy) else 0
+            # Update the dynamic programming value for the current index
+            dp[i] += cumulative_energy
+
+        # Return the maximum energy value from the dynamic programming list
+        return max(dp)
+
+
+        ##### prefix sum solution
+
         # Initialize a list to store the maximum energy sums for each possible starting point
         max_energy_sums = []
         # Iterate over the possible starting points
