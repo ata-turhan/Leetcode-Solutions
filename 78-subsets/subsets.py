@@ -10,7 +10,7 @@ class Solution:
             new_subset = []
             count = 0
             # Check each bit of the binary representation
-            while 2**count <= i:
+            while (1<<count) <= i:
                 # If the bit is set, add the corresponding element to the subset
                 if i & (1<<count) > 0:
                     new_subset.append(nums[count])
