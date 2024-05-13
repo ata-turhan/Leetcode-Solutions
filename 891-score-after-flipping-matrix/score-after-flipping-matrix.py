@@ -1,29 +1,32 @@
+from typing import List
+
 class Solution:
     def matrixScore(self, grid: List[List[int]]) -> int:
-        grid = grid.copy()
-        m, n = len(grid), len(grid[0])
+        # Make a copy of the grid
+        grid_copy = grid.copy()
         
+        # Get the dimensions of the grid
+        m, n = len(grid_copy), len(grid_copy[0])
+        
+        # Toggle rows to ensure the first element of each row is 1
         for i in range(m):
-            if grid[i][0] == 0:
+            if grid_copy[i][0] == 0:
                 for j in range(n):
-                    grid[i][j] ^= 1
+                    grid_copy[i][j] ^= 1
 
+        # Toggle columns to maximize the score
         for j in range(1, n):
-            counts_1 = 0
-            for i in range(m):
-                counts_1 += grid[i][j]
-            if counts_1 < m/2:
+            ones_count = sum(grid_copy[i][j] for i in range(m))
+            if ones_count < m/2:
                 for i in range(m):
-                    grid[i][j] ^= 1
+                    grid_copy[i][j] ^= 1
 
-        res = 0
+        # Calculate the final score
+        score = 0
         for i in range(m):
-            count = 0
             val = 0
             for j in range(n-1, -1, -1):
-                val += grid[i][j] * 2**count
-                count += 1
-            res += val
+                val += grid_copy[i][j] * 2**(n-1-j)
+            score += val
             
-        return res
-        
+        return score
