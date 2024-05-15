@@ -27,23 +27,25 @@ class Solution:
                     dist[ni][nj] = dist[i][j] + 1
                     deq.append((ni, nj))
 
-        # Function to check if we can reach bottom-right corner with safeness factor at least v
+        # Function to check if we can reach bottom-right corner with safeness factor at least v using DFS
         def canReach(v):
             if dist[0][0] < v or dist[rows - 1][cols - 1] < v:
                 return False
             
-            deq = deque([(0, 0)])
-            visited = set([(0, 0)])
-            while deq:
-                i, j = deq.popleft()
+            def dfs(i, j, visited):
+                if (i, j) in visited:
+                    return False
                 if i == rows - 1 and j == cols - 1:
                     return True
+                visited.add((i, j))
                 for di, dj in directions:
                     ni, nj = i + di, j + dj
                     if 0 <= ni < rows and 0 <= nj < cols and (ni, nj) not in visited and dist[ni][nj] >= v:
-                        visited.add((ni, nj))
-                        deq.append((ni, nj))
-            return False
+                        if dfs(ni, nj, visited):
+                            return True
+                return False
+            
+            return dfs(0, 0, set())
 
         # Binary search on the possible safeness factor
         left, right = 0, min(rows, cols) - 1
