@@ -9,16 +9,17 @@ class Solution:
         dist = [[-1] * cols for _ in range(rows)]
         deq = deque()
 
-        # Start BFS from all 1's
+        # Start BFS from all cells containing 1's
         for i in range(rows):
             for j in range(cols):
                 if grid[i][j] == 1:
                     deq.append((i, j))
                     dist[i][j] = 0
 
+        # Directions for moving in the grid: right, down, left, up
         directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
         
-        # Multi-source BFS to compute minimum distances
+        # Multi-source BFS to compute minimum distances from 1's
         while deq:
             i, j = deq.popleft()
             for di, dj in directions:
@@ -29,9 +30,11 @@ class Solution:
 
         # Function to check if we can reach bottom-right corner with safeness factor at least v using DFS
         def canReach(v):
+            # If start or end point's safeness is less than v, return False
             if dist[0][0] < v or dist[rows - 1][cols - 1] < v:
                 return False
             
+            # DFS to check reachability
             def dfs(i, j, visited):
                 if (i, j) in visited:
                     return False
