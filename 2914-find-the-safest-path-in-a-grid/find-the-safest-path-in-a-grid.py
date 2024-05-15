@@ -6,45 +6,43 @@ class Solution:
         rows, cols = len(grid), len(grid[0])
         
         # Initialize distances to -1
-        dist = [[-1] * cols for _ in range(rows)]
-        deq = deque()
+        distance = [[-1] * cols for _ in range(rows)]
+        queue = deque()
 
         # Start BFS from all cells containing 1's
-        for i in range(rows):
-            for j in range(cols):
-                if grid[i][j] == 1:
-                    deq.append((i, j))
-                    dist[i][j] = 0
+        for row in range(rows):
+            for col in range(cols):
+                if grid[row][col] == 1:
+                    queue.append((row, col))
+                    distance[row][col] = 0
 
         # Directions for moving in the grid: right, down, left, up
         directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
         
         # Multi-source BFS to compute minimum distances from 1's
-        while deq:
-            i, j = deq.popleft()
-            for di, dj in directions:
-                ni, nj = i + di, j + dj
-                if 0 <= ni < rows and 0 <= nj < cols and dist[ni][nj] == -1:
-                    dist[ni][nj] = dist[i][j] + 1
-                    deq.append((ni, nj))
+        while queue:
+            curr_row, curr_col = queue.popleft()
+            for d_row, d_col in directions:
+                next_row, next_col = curr_row + d_row, curr_col + d_col
+                if 0 <= next_row < rows and 0 <= next_col < cols and distance[next_row][next_col] == -1:
+                    distance[next_row][next_col] = distance[curr_row][curr_col] + 1
+                    queue.append((next_row, next_col))
 
-        # Function to check if we can reach bottom-right corner with safeness factor at least v using DFS
-        def canReach(v):
-            # If start or end point's safeness is less than v, return False
-            if dist[0][0] < v or dist[rows - 1][cols - 1] < v:
+        # Function to check if we can reach bottom-right corner with safeness factor at least `safeness`
+        def canReach(safeness):
+            if distance[0][0] < safeness or distance[rows - 1][cols - 1] < safeness:
                 return False
             
-            # DFS to check reachability
-            def dfs(i, j, visited):
-                if (i, j) in visited:
+            def dfs(row, col, visited):
+                if (row, col) in visited:
                     return False
-                if i == rows - 1 and j == cols - 1:
+                if row == rows - 1 and col == cols - 1:
                     return True
-                visited.add((i, j))
-                for di, dj in directions:
-                    ni, nj = i + di, j + dj
-                    if 0 <= ni < rows and 0 <= nj < cols and (ni, nj) not in visited and dist[ni][nj] >= v:
-                        if dfs(ni, nj, visited):
+                visited.add((row, col))
+                for d_row, d_col in directions:
+                    next_row, next_col = row + d_row, col + d_col
+                    if 0 <= next_row < rows and 0 <= next_col < cols and (next_row, next_col) not in visited and distance[next_row][next_col] >= safeness:
+                        if dfs(next_row, next_col, visited):
                             return True
                 return False
             
@@ -52,13 +50,13 @@ class Solution:
 
         # Binary search on the possible safeness factor
         left, right = 0, min(rows, cols) - 1
-        res = 0
+        max_safeness = 0
         while left <= right:
             mid = (left + right) // 2
             if canReach(mid):
-                res = mid
+                max_safeness = mid
                 left = mid + 1
             else:
                 right = mid - 1
 
-        return res
+        return max_safeness
