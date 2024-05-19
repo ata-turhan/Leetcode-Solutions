@@ -6,11 +6,11 @@ class Solution:
         total_difference_sum = 0
         n = len(nums)
         
-        # Determine the maximum number of digits in the largest number
+        # Determine the maximum number of digits in any number
         max_digits = 0
-        max_num = max(nums)
-        while max_num > 0:
-            max_num //= 10
+        num = nums[0]
+        while num > 0:
+            num //= 10
             max_digits += 1
 
         # Loop through each digit place (units, tens, hundreds, etc.)
