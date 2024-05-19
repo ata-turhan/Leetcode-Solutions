@@ -4,27 +4,22 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
 class Solution:
     def removeLeafNodes(self, root: Optional[TreeNode], target: int) -> Optional[TreeNode]:
-        def remove(node, parent, target):
+        def remove(node: Optional[TreeNode], target: int) -> Optional[TreeNode]:
             if not node:
                 return None
 
-            remove(node.left, node, target)
-            remove(node.right, node, target)
+            # Recursively remove leaf nodes in the left and right subtrees
+            node.left = remove(node.left, target)
+            node.right = remove(node.right, target)
 
+            # Check if the current node is a leaf node with the target value
             if not node.left and not node.right and node.val == target:
-                if not parent:
-                    return None
-                elif parent.left == node:
-                    parent.left = None
-                else:
-                    parent.right = None
-
+                return None  # Remove this leaf node by returning None
 
             return node
 
-        return remove(root, None, target)
-
-        
-        
+        # Start the removal process from the root
+        return remove(root, target)
