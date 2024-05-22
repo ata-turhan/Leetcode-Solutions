@@ -1,5 +1,5 @@
 WITH coordinates_with_rn AS (
-    SELECT x, y, ROW_NUMBER() OVER (ORDER BY x, y) AS rn
+    SELECT x, y, ROW_NUMBER() OVER () AS rn
     FROM Coordinates
 )
 
