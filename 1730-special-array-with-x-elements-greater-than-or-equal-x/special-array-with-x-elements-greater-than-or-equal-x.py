@@ -1,6 +1,5 @@
 from typing import List
 from collections import Counter
-from bisect import bisect_left
 
 class Solution:
     def specialArray(self, nums: List[int]) -> int:
@@ -11,8 +10,6 @@ class Solution:
         :param nums: List[int] - List of integers.
         :return: int - The special integer x or -1 if no such integer exists.
         """
-        # Sort the array to facilitate the counting process
-        nums.sort()
 
         # Create a frequency counter for elements in nums
         freq_counter = Counter(nums)
@@ -23,22 +20,24 @@ class Solution:
         
         # Initialize the count of elements seen so far
         count = 0
+        prev_val = -1
         
         # Iterate over each unique element and its frequency in descending order
         for value, freq in freq_items:
+            # Check if the current value is less than the count and the count
+            # is less than or equal to the previous value
+            if value < count <= prev_val:
+                return count  # Found the special integer
+
             # Accumulate the total number of elements considered so far
             count += freq
 
-            # Use binary search to find the index where 'count' should be inserted
-            # in the sorted list to maintain order
-            idx = bisect_left(nums, count)
-
-            # Check if 'count' is the number of elements greater than or equal to 'count'
-            if count == len(nums) - idx:
-                return count
+            # Update the previous value to the current value
+            prev_val = value
         
-        # If no special integer is found, return -1
-        return -1
+        # After the loop, check if the total count is a valid special number
+        # The count should be less than or equal to the smallest number in nums
+        return count if count <= min(nums) else -1
 
 # Example usage:
 # sol = Solution()
