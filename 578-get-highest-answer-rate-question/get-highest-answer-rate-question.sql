@@ -1,4 +1,19 @@
-with answer_rates as (
-    select question_id, row_number() over (order by sum(action = "answer")/sum(action = "show") desc, question_id asc) as rn from surveylog group by question_id
+-- CTE to calculate the answer rates for each question and rank them
+WITH answer_rates AS (
+    SELECT 
+        question_id, 
+        ROW_NUMBER() OVER (ORDER BY SUM(action = 'answer') / SUM(action = 'show') DESC, question_id ASC) AS rn 
+    FROM 
+        surveylog 
+    GROUP BY 
+        question_id
 )
-select question_id as survey_log from answer_rates where rn = 1 and question_id is not null
+
+-- Main query to find the question with the highest answer rate
+SELECT 
+    question_id AS survey_log 
+FROM 
+    answer_rates 
+WHERE 
+    rn = 1 
+    AND question_id IS NOT NULL;
