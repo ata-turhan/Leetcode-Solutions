@@ -1,5 +1,26 @@
-with ranks as (
-    select seller_id, count(distinct item_id) as num_items, rank() over ( order by count(distinct item_id) desc ) as rank_num from orders as o join items as i using(item_id) join users as u using(seller_id) where favorite_brand != item_brand group by seller_id
+-- CTE to calculate the number of distinct items sold by each seller and rank them
+WITH ranks AS (
+    SELECT 
+        seller_id, 
+        COUNT(DISTINCT item_id) AS num_items, 
+        RANK() OVER (ORDER BY COUNT(DISTINCT item_id) DESC) AS rank_num 
+    FROM 
+        orders AS o 
+    JOIN 
+        items AS i USING(item_id) 
+    JOIN 
+        users AS u USING(seller_id) 
+    WHERE 
+        favorite_brand != item_brand 
+    GROUP BY 
+        seller_id
 )
 
-select seller_id, num_items from ranks where rank_num = 1;
+-- Main query to find the seller(s) with the highest number of distinct items sold
+SELECT 
+    seller_id, 
+    num_items 
+FROM 
+    ranks 
+WHERE 
+    rank_num = 1;
