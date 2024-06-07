@@ -14,14 +14,14 @@ class Solution:
         for num in nums:
             xor_all ^= num
 
-        # Find the rightmost set bit (lsb1) in xor_all
-        lsb1 = xor_all & -xor_all
+        # Find the rightmost set bit (rsb1) in xor_all
+        rsb1 = xor_all & -xor_all
 
         res1, res2 = 0, 0  # Initialize the results for the two unique numbers
 
         # Divide the numbers into two groups and XOR within each group
         for num in nums:
-            if num & lsb1:
+            if num & rsb1:
                 res1 ^= num  # XOR of one group
             else:
                 res2 ^= num  # XOR of the other group
