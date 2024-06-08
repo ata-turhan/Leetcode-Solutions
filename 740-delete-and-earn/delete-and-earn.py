@@ -1,23 +1,14 @@
 class Solution:
     def deleteAndEarn(self, nums: List[int]) -> int:
-        # Count the frequency of each number in nums
-        counter = Counter(nums)
-        # Get the sorted list of unique numbers
-        houses = list(sorted(counter.keys()))
-        # Initialize dp array with an extra space for easier indexing
-        dp = [0] * (len(houses) + 1)
-        # Initialize the first element in dp array
-        dp[1] = counter[houses[0]] * houses[0]
+        num_counts = Counter(nums)  # Count occurrences of each number
+        unique_nums = sorted(num_counts.keys())  # Get sorted unique numbers
+        max_points = [0] * (len(unique_nums) + 1)  # Initialize dp array
+        max_points[1] = num_counts[unique_nums[0]] * unique_nums[0]  # Base case for first number
 
-        # Iterate through the sorted list of unique numbers starting from the second element
-        for i, house in enumerate(houses[1:], start=2):
-            # If the current number is consecutive to the previous one
-            if house - 1 == houses[i - 2]:
-                # Take the maximum of either not taking the current number or taking it
-                dp[i] = max(dp[i - 1], counter[house] * house + dp[i - 2])
+        for i, num in enumerate(unique_nums[1:], start=2):
+            if num - 1 == unique_nums[i - 2]:  # If current number is consecutive to previous
+                max_points[i] = max(max_points[i - 1], num_counts[num] * num + max_points[i - 2])
             else:
-                # If not consecutive, add the current number's total to the previous total
-                dp[i] = dp[i - 1] + counter[house] * house
+                max_points[i] = max_points[i - 1] + num_counts[num] * num  # If not consecutive
 
-        # Return the last element in dp array which contains the maximum points
-        return dp[-1]
+        return max_points[-1]  # Maximum points that can be earned
