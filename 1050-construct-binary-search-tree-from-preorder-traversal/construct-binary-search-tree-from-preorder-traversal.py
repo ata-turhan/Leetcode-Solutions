@@ -7,24 +7,24 @@
 
 class Solution:
     def bstFromPreorder(self, preorder: List[int]) -> Optional[TreeNode]:
-        def create(left, right):
-            if left > right:
+        def buildBST(left_index, right_index):
+            if left_index > right_index:
                 return None
-            if left == right:
-                return TreeNode(preorder[left])
+            if left_index == right_index:
+                return TreeNode(preorder[left_index])
 
-            root = TreeNode(preorder[left])
+            root = TreeNode(preorder[left_index])
             
             # Find the first element greater than the root to split into left and right subtrees
-            for i in range(left + 1, right + 1):
-                if preorder[i] > preorder[left]:
+            for split_index in range(left_index + 1, right_index + 1):
+                if preorder[split_index] > preorder[left_index]:
                     break
             else:
-                i = right + 1
+                split_index = right_index + 1
 
-            root.left = create(left + 1, i - 1)
-            root.right = create(i, right)
+            root.left = buildBST(left_index + 1, split_index - 1)
+            root.right = buildBST(split_index, right_index)
 
             return root
 
-        return create(0, len(preorder) - 1)
+        return buildBST(0, len(preorder) - 1)
