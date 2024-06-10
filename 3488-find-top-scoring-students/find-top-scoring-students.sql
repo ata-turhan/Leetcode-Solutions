@@ -1,5 +1,5 @@
 -- CTE to count the number of distinct courses for each major
-WITH major_course_counts AS (
+WITH MajorCourseCounts AS (
     SELECT 
         major, 
         COUNT(DISTINCT course_id) AS course_count 
@@ -10,34 +10,34 @@ WITH major_course_counts AS (
 ),
 
 -- CTE to join students with their respective major course counts
-student_course_counts AS (
+StudentMajorCourseCounts AS (
     SELECT 
         s.*, 
         mcc.course_count 
     FROM 
         students AS s 
     JOIN 
-        major_course_counts AS mcc 
+        MajorCourseCounts AS mcc 
     USING (major)
 ),
 
 -- CTE to count the number of courses taken by each student and get their max grade
-enrollment_course_count_max_grade AS (
+StudentEnrollmentStats AS (
     SELECT 
         e.student_id, 
         COUNT(DISTINCT e.course_id) AS taken_course_count, 
         MAX(e.grade) AS max_grade, 
-        scc.course_count 
+        smcc.course_count 
     FROM 
         enrollments AS e 
     JOIN 
         courses AS c 
     USING (course_id) 
     JOIN 
-        student_course_counts AS scc 
+        StudentMajorCourseCounts AS smcc 
     ON 
-        c.major = scc.major 
-        AND scc.student_id = e.student_id 
+        c.major = smcc.major 
+        AND smcc.student_id = e.student_id 
     GROUP BY 
         e.student_id
 )
@@ -46,7 +46,7 @@ enrollment_course_count_max_grade AS (
 SELECT 
     student_id 
 FROM 
-    enrollment_course_count_max_grade 
+    StudentEnrollmentStats 
 WHERE 
     taken_course_count = course_count 
     AND max_grade = 'A';
