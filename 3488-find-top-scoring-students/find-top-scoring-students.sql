@@ -2,7 +2,7 @@
 WITH MajorCourseCounts AS (
     SELECT 
         major, 
-        COUNT(DISTINCT course_id) AS course_count 
+        COUNT(DISTINCT course_id) AS total_courses 
     FROM 
         courses 
     GROUP BY 
@@ -12,8 +12,9 @@ WITH MajorCourseCounts AS (
 -- CTE to join students with their respective major course counts
 StudentMajorCourseCounts AS (
     SELECT 
-        s.*, 
-        mcc.course_count 
+        s.student_id, 
+        s.major, 
+        mcc.total_courses 
     FROM 
         students AS s 
     JOIN 
@@ -21,13 +22,13 @@ StudentMajorCourseCounts AS (
     USING (major)
 ),
 
--- CTE to count the number of courses taken by each student and get their max grade
+-- CTE to count the number of courses taken by each student and get their lowest grade
 StudentEnrollmentStats AS (
     SELECT 
         e.student_id, 
-        COUNT(DISTINCT e.course_id) AS taken_course_count, 
-        MAX(e.grade) AS max_grade, 
-        smcc.course_count 
+        COUNT(DISTINCT e.course_id) AS taken_courses, 
+        MAX(e.grade) AS lowest_grade, 
+        smcc.total_courses 
     FROM 
         enrollments AS e 
     JOIN 
@@ -48,5 +49,5 @@ SELECT
 FROM 
     StudentEnrollmentStats 
 WHERE 
-    taken_course_count = course_count 
-    AND max_grade = 'A';
+    taken_courses = total_courses 
+    AND lowest_grade = 'A';
