@@ -1,11 +1,52 @@
-with major_course_counts as (
-    select major, count(distinct course_id) as course_count from courses group by major
+-- CTE to count the number of distinct courses for each major
+WITH major_course_counts AS (
+    SELECT 
+        major, 
+        COUNT(DISTINCT course_id) AS course_count 
+    FROM 
+        courses 
+    GROUP BY 
+        major
 ),
-student_course_counts as (
-    select * from students join major_course_counts using(major)
+
+-- CTE to join students with their respective major course counts
+student_course_counts AS (
+    SELECT 
+        s.*, 
+        mcc.course_count 
+    FROM 
+        students AS s 
+    JOIN 
+        major_course_counts AS mcc 
+    USING (major)
 ),
-enrollment_course_count_max_grade as (
-    select e.student_id, count(distinct course_id) as taken_course_count, max(grade) as max_grade, course_count from enrollments as e join courses as c using(course_id) join student_course_counts as s on c.major = s.major and s.student_id = e.student_id group by e.student_id
+
+-- CTE to count the number of courses taken by each student and get their max grade
+enrollment_course_count_max_grade AS (
+    SELECT 
+        e.student_id, 
+        COUNT(DISTINCT e.course_id) AS taken_course_count, 
+        MAX(e.grade) AS max_grade, 
+        scc.course_count 
+    FROM 
+        enrollments AS e 
+    JOIN 
+        courses AS c 
+    USING (course_id) 
+    JOIN 
+        student_course_counts AS scc 
+    ON 
+        c.major = scc.major 
+        AND scc.student_id = e.student_id 
+    GROUP BY 
+        e.student_id
 )
 
-select student_id from enrollment_course_count_max_grade where taken_course_count = course_count and max_grade = "A"
+-- Main query to select students who have taken all courses in their major and have a max grade of 'A'
+SELECT 
+    student_id 
+FROM 
+    enrollment_course_count_max_grade 
+WHERE 
+    taken_course_count = course_count 
+    AND max_grade = 'A';
