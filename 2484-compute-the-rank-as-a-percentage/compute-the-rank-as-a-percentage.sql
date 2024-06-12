@@ -1,4 +1,23 @@
-with students_ranks as (
-    select *, rank() over (partition by department_id order by mark desc) as rank_val, count(*) over (partition by department_id) as department_student_count from students
+-- CTE to rank students within each department and count the number of students in each department
+WITH students_ranks AS (
+    SELECT 
+        student_id,
+        department_id,
+        mark,
+        RANK() OVER (PARTITION BY department_id ORDER BY mark DESC) AS rank_val,
+        COUNT(*) OVER (PARTITION BY department_id) AS department_student_count
+    FROM 
+        students
 )
-select student_id, department_id, ifnull(round((rank_val - 1) * 100 / (department_student_count - 1), 2), 0)  as percentage from students_ranks
+
+-- Main query to calculate the percentile rank of each student within their department
+SELECT 
+    student_id, 
+    department_id,
+    -- Calculate the percentile rank
+    IFNULL(
+        ROUND((rank_val - 1) * 100 / (department_student_count - 1), 2), 
+        0
+    ) AS percentage
+FROM 
+    students_ranks;
