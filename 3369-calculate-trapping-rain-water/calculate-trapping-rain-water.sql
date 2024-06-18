@@ -21,10 +21,7 @@ RightMax AS (
 -- CTE to join the left max and right max heights with the original heights
 WaterLevels AS (
     SELECT 
-        l.id,
         l.height,
-        l.left_max,
-        r.right_max,
         LEAST(l.left_max, r.right_max) AS water_level
     FROM 
         LeftMax l
