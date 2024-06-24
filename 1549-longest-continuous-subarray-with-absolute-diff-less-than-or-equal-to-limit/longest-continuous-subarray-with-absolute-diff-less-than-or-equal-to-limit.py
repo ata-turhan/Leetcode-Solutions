@@ -10,12 +10,13 @@ class Solution:
             window.add(nums[right])
             current_diff = window[-1] - window[0]
             
-            # Check if the difference within the window exceeds the limit
-            if current_diff <= limit:
-                max_length = max(max_length, len(window))
-            else:
-                # If the difference exceeds the limit, remove the leftmost element
+            # Shrink the window from the left until the difference is within the limit
+            while left < right and current_diff > limit:
                 window.remove(nums[left])
                 left += 1
+                current_diff = window[-1] - window[0]
+            
+            # Update the maximum length of the subarray
+            max_length = max(max_length, len(window))
         
         return max_length
