@@ -5,16 +5,23 @@ class Solution:
     def minKBitFlips(self, nums: List[int], k: int) -> int:
         n = len(nums)
         queue = deque()
-        count = 0
+        flip_count = 0
 
         for i in range(n):
+            # Remove the index from the front of the queue if it is out of the current window
             if queue and queue[0] == i:
                 queue.popleft()
 
-            if (len(queue) % 2 == 0 and nums[i] == 0) or (len(queue) % 2 == 1 and nums[i] == 1):
+            # Determine the current bit state after flips
+            current_state = nums[i] if len(queue) % 2 == 0 else 1 - nums[i]
+
+            # If the current bit needs to be flipped
+            if current_state == 0:
+                # If flipping would go beyond the array, return -1
                 if i + k > n:
                     return -1
+                # Add the index where the current flip window ends
                 queue.append(i + k)
-                count += 1
+                flip_count += 1
 
-        return count
+        return flip_count
