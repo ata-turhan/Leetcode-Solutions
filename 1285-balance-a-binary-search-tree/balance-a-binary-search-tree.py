@@ -4,34 +4,31 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
 class Solution:
     def balanceBST(self, root: TreeNode) -> TreeNode:
-        inorder_nodes = []
-        def inorder(node):
+        sorted_values = []
+        
+        # Perform an inorder traversal to collect the node values in sorted order
+        def inorder_traversal(node):
             if not node:
                 return
+            inorder_traversal(node.left)
+            sorted_values.append(node.val)
+            inorder_traversal(node.right)
 
-            inorder(node.left)
-            inorder_nodes.append(node.val)
-            inorder(node.right)
+        inorder_traversal(root)
 
-        inorder(root)
-
-        def create_balanced_bst(array, l, r):
-            if l > r:
+        # Create a balanced BST from the sorted array of node values
+        def build_balanced_bst(values, left, right):
+            if left > right:
                 return None
-            elif l == r:
-                return TreeNode(val=array[l])
+            mid = left + (right - left) // 2
+            new_root = TreeNode(val=values[mid])
+            new_root.left = build_balanced_bst(values, left, mid - 1)
+            new_root.right = build_balanced_bst(values, mid + 1, right)
+            return new_root
 
-            mid = l + (r-l) // 2
-            left_subtree = create_balanced_bst(array, l, mid-1)
-            root = TreeNode(val=array[mid])
-            right_subtree = create_balanced_bst(array, mid + 1, r)
-            root.left = left_subtree
-            root.right = right_subtree
-
-            return root
-
-        new_root = create_balanced_bst(inorder_nodes, 0, len(inorder_nodes)-1)
-        return new_root
-
+        # Generate the balanced BST
+        balanced_root = build_balanced_bst(sorted_values, 0, len(sorted_values) - 1)
+        return balanced_root
