@@ -15,17 +15,17 @@ class Solution:
             if (i, buying) in dp:
                 return dp[(i, buying)]
             
-            # Calculate the profit for the cooldown state
-            cooldown = dfs(i + 1, buying)
+            # Calculate the profit for the do_nothing state
+            do_nothing = dfs(i + 1, buying)
             
             if buying:
                 # If buying, calculate the profit if we buy at the current price
                 buy = dfs(i + 1, not buying) - prices[i]
-                dp[(i, buying)] = max(buy, cooldown)
+                dp[(i, buying)] = max(buy, do_nothing)
             else:
                 # If selling, calculate the profit if we sell at the current price
                 sell = dfs(i + 2, not buying) + prices[i]
-                dp[(i, buying)] = max(sell, cooldown)
+                dp[(i, buying)] = max(sell, do_nothing)
             
             return dp[(i, buying)]
         
