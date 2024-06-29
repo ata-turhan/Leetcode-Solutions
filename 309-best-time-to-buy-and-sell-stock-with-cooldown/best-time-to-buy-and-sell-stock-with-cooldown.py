@@ -6,7 +6,6 @@ class Solution:
         # Dictionary to store the results of subproblems
         dp = {}  # key=(i, buying) val=max_profit
 
-        @cache
         def dfs(i: int, buying: bool) -> int:
             # Base case: If we've gone through all the prices
             if i >= len(prices):
