@@ -1,6 +1,11 @@
+from typing import List
+from functools import cache
+import math
+
 class Solution:
     def minCostII(self, costs: List[List[int]]) -> int:
-        k = len(costs[0])
+        k = len(costs[0])  # Number of colors available
+
         @cache
         def min_paint_cost(house_idx: int, prev_color: int) -> int:
             # Base case: If all houses are painted
@@ -21,5 +26,3 @@ class Solution:
 
         # Start from the first house with no previous color
         return min_paint_cost(0, -1)
-
-        
