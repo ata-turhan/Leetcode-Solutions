@@ -1,3 +1,4 @@
+-- CTE to calculate the total quantity sold per item category and day of the week
 WITH DayOfWeekSales AS (
     SELECT 
         i.item_category AS Category,
@@ -10,6 +11,8 @@ WITH DayOfWeekSales AS (
     GROUP BY 
         i.item_category, DAYNAME(o.order_date)
 )
+
+-- Main query to pivot the data by day of the week for each category
 SELECT 
     Category,
     COALESCE(SUM(CASE WHEN DayOfWeek = 'Monday' THEN Quantity ELSE 0 END), 0) AS Monday,
