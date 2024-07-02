@@ -9,7 +9,7 @@ WITH DayOfWeekSales AS (
     RIGHT JOIN 
         Items i ON o.item_id = i.item_id
     GROUP BY 
-        i.item_category, DAYNAME(o.order_date)
+        i.item_category, DayOfWeek
 )
 
 -- Main query to pivot the data by day of the week for each category
