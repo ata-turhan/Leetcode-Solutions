@@ -5,7 +5,7 @@ class Solution:
     def minDifference(self, nums: List[int]) -> int:
         nums_size = len(nums)
         
-        # If there are 4 or fewer elements, we can make the array equal with 0 moves
+        # If there are 4 or fewer elements, we can make the array equal
         if nums_size <= 4:
             return 0
         
