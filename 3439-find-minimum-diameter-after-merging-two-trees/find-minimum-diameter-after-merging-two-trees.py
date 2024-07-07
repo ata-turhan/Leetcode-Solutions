@@ -42,12 +42,10 @@ class Solution:
                         queue.append(neighbor)
             
             # Find the center of the diameter
-            path = []
             node = other_end
             while distances[node] > diameter // 2:
                 for neighbor in tree[node]:
                     if distances[neighbor] == distances[node] - 1:
-                        path.append(node)
                         node = neighbor
                         break
             
