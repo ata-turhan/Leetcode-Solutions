@@ -1,23 +1,23 @@
 from collections import deque, defaultdict
+from typing import List
 
 class Solution:
     def minimumDiameterAfterMerge(self, edges1: List[List[int]], edges2: List[List[int]]) -> int:
         def bfs_diameter(tree, start):
-            # Perform BFS to find the farthest node and distance
             def bfs(node):
-                q = deque([node])
+                queue = deque([node])
                 distances = {node: 0}
                 farthest_node = node
                 max_distance = 0
                 
-                while q:
-                    current = q.popleft()
+                while queue:
+                    current = queue.popleft()
                     current_distance = distances[current]
                     
                     for neighbor in tree[current]:
                         if neighbor not in distances:
                             distances[neighbor] = current_distance + 1
-                            q.append(neighbor)
+                            queue.append(neighbor)
                             if distances[neighbor] > max_distance:
                                 max_distance = distances[neighbor]
                                 farthest_node = neighbor
@@ -30,16 +30,16 @@ class Solution:
             other_end, diameter = bfs(farthest_node)
             
             # Perform BFS again to find the distance from farthest_node to all other nodes
-            q = deque([farthest_node])
+            queue = deque([farthest_node])
             distances = {farthest_node: 0}
-            while q:
-                current = q.popleft()
+            while queue:
+                current = queue.popleft()
                 current_distance = distances[current]
                 
                 for neighbor in tree[current]:
                     if neighbor not in distances:
                         distances[neighbor] = current_distance + 1
-                        q.append(neighbor)
+                        queue.append(neighbor)
             
             # Find the center of the diameter
             path = []
@@ -54,6 +54,7 @@ class Solution:
             center = node
             return diameter, center
 
+        # Build the adjacency lists for both trees
         tree1 = defaultdict(list)
         tree2 = defaultdict(list)
         
@@ -73,6 +74,3 @@ class Solution:
         min_diameter = max(diameter1, diameter2, (diameter1 + 1) // 2 + (diameter2 + 1) // 2 + 1)
         
         return min_diameter
-
-
-        
