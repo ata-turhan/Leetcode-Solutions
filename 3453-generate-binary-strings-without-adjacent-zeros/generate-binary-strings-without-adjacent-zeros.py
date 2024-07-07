@@ -20,7 +20,7 @@ class Solution:
                     queue.append(current_string)
                 else:
                     # If the last character is 1, append both 0 and 1
-                    new_string1 = current_string.copy()
+                    new_string1 = current_string
                     new_string2 = current_string.copy()
                     new_string1.append(0)
                     new_string2.append(1)
