@@ -1,43 +1,36 @@
 class Solution:
     def survivedRobotsHealths(self, positions: List[int], healths: List[int], directions: str) -> List[int]:
-        robots = [ (p, h, d) for p, h, d in zip(positions, healths, directions) ]
-        robots = [ [r[0], r[1], r[2], i] for i, r in enumerate(robots)]
-
-        stack = []
+        # Combine the positions, healths, and directions into a list of robots
+        robots = [[position, health, direction, index] for index, (position, health, direction) in enumerate(zip(positions, healths, directions))]
+        
+        # Sort the robots based on their positions
         robots.sort()
 
+        stack = []
 
-        for r in robots:
+        for robot in robots:
             if not stack:
-                stack.append(r)
+                stack.append(robot)
             else:
-                if r[2] == "R":
-                    stack.append(r)
-                else:
-                    if stack[-1][2] == "L":
-                        stack.append(r)
-                    else:
-                        if stack[-1][1] == r[1]:
-                            stack.pop()
-                        elif stack[-1][1] > r[1]:
-                            stack[-1][1] -= 1
-                        else:
-                            while stack and stack[-1][2] == "R" and stack[-1][1] < r[1]:
-                                r[1] -= 1
-                                stack.pop()
-                            if not stack:
-                                stack.append(r)
-                            elif stack[-1][2] == "L":
-                                stack.append(r)
-                            elif stack[-1][1] == r[1]:
-                                stack.pop()
-                            elif stack[-1][1] > r[1]:
-                                stack[-1][1] -= 1
+                if robot[2] == "R":  # Current robot is moving right
+                    stack.append(robot)
+                else:  # Current robot is moving left
+                    while stack and stack[-1][2] == "R" and stack[-1][1] < robot[1]:
+                        # Robot moving left collides with the robot moving right
+                        robot[1] -= 1  # Reduce the health of the current robot
+                        stack.pop()  # Remove the robot from the stack
 
+                    if not stack:
+                        stack.append(robot)
+                    elif stack[-1][2] == "L":
+                        stack.append(robot)
+                    elif stack[-1][1] == robot[1]:
+                        stack.pop()  # Both robots destroy each other
+                    elif stack[-1][1] > robot[1]:
+                        stack[-1][1] -= 1  # Reduce the health of the robot in the stack
 
-        survivor_healths = [ (r[3], r[1]) for r in stack]
-        survivor_healths.sort()
-        return [ r[1] for r in survivor_healths]
+        # Prepare the list of surviving robots' healths
+        surviving_robots = [(robot[3], robot[1]) for robot in stack]
+        surviving_robots.sort()  # Sort based on original indices
 
-
-        
+        return [health for index, health in surviving_robots]
