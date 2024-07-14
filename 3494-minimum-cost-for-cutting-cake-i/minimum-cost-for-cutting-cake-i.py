@@ -1,35 +1,39 @@
 class Solution:
     def minimumCost(self, m: int, n: int, horizontalCuts: List[int], verticalCuts: List[int]) -> int:
-        # Sort the cuts in descending order
+        # Sort the cuts in descending order to maximize the cost savings
         horizontalCuts.sort(reverse=True)
         verticalCuts.sort(reverse=True)
 
-        # Initialize the number of horizontal and vertical pieces
-        horizontal_pieces = 1
-        vertical_pieces = 1
+        # Initialize the number of horizontal and vertical segments
+        horizontal_segments = 1
+        vertical_segments = 1
 
         total_cost = 0
-        i, j = 0, 0
+        h_index, v_index = 0, 0
 
         # Use a greedy approach to pick the most expensive cut at each step
-        while i < len(horizontalCuts) and j < len(verticalCuts):
-            if horizontalCuts[i] >= verticalCuts[j]:
-                total_cost += horizontalCuts[i] * horizontal_pieces
-                vertical_pieces += 1
-                i += 1
+        while h_index < len(horizontalCuts) and v_index < len(verticalCuts):
+            if horizontalCuts[h_index] >= verticalCuts[v_index]:
+                # Add cost of the horizontal cut multiplied by the number of horizontal segments
+                total_cost += horizontalCuts[h_index] * horizontal_segments
+                # Increment the number of horizontal segments
+                vertical_segments += 1
+                h_index += 1
             else:
-                total_cost += verticalCuts[j] * vertical_pieces
-                horizontal_pieces += 1
-                j += 1
+                # Add cost of the vertical cut multiplied by the number of vertical segments
+                total_cost += verticalCuts[v_index] * vertical_segments
+                # Increment the number of vertical segments
+                horizontal_segments += 1
+                v_index += 1
 
-        # If there are remaining horizontal cuts
-        while i < len(horizontalCuts):
-            total_cost += horizontalCuts[i] * horizontal_pieces
-            i += 1
+        # Add remaining horizontal cuts
+        while h_index < len(horizontalCuts):
+            total_cost += horizontalCuts[h_index] * horizontal_segments
+            h_index += 1
 
-        # If there are remaining vertical cuts
-        while j < len(verticalCuts):
-            total_cost += verticalCuts[j] * vertical_pieces
-            j += 1
+        # Add remaining vertical cuts
+        while v_index < len(verticalCuts):
+            total_cost += verticalCuts[v_index] * vertical_segments
+            v_index += 1
 
         return total_cost
