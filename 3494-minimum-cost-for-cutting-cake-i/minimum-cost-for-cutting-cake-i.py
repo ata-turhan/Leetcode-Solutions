@@ -16,13 +16,13 @@ class Solution:
             if horizontalCuts[h_index] >= verticalCuts[v_index]:
                 # Add cost of the horizontal cut multiplied by the number of horizontal segments
                 total_cost += horizontalCuts[h_index] * horizontal_segments
-                # Increment the number of horizontal segments
+                # Increment the number of vertical segments
                 vertical_segments += 1
                 h_index += 1
             else:
                 # Add cost of the vertical cut multiplied by the number of vertical segments
                 total_cost += verticalCuts[v_index] * vertical_segments
-                # Increment the number of vertical segments
+                # Increment the number of horizontal segments
                 horizontal_segments += 1
                 v_index += 1
 
