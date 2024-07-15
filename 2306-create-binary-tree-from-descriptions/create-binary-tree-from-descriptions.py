@@ -4,27 +4,30 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
 class Solution:
     def createBinaryTree(self, descriptions: List[List[int]]) -> Optional[TreeNode]:
-        nodes = dict()
-        childs = set()
+        nodes = {}  # Dictionary to store all the nodes
+        children = set()  # Set to keep track of all child nodes
 
-        for parent, child, isLeft in descriptions:
-            if parent not in nodes:
-                nodes[parent] = TreeNode(val = parent)
-            if child not in nodes:
-                nodes[child] = TreeNode(val = child)
-            childs.add(child)
-            if isLeft:
-                nodes[parent].left = nodes[child]
+        # Process each description to build the tree
+        for parent_val, child_val, is_left in descriptions:
+            if parent_val not in nodes:
+                nodes[parent_val] = TreeNode(val=parent_val)
+            if child_val not in nodes:
+                nodes[child_val] = TreeNode(val=child_val)
+            
+            children.add(child_val)
+            
+            if is_left:
+                nodes[parent_val].left = nodes[child_val]
             else:
-                nodes[parent].right = nodes[child]
+                nodes[parent_val].right = nodes[child_val]
 
-        for parent, child, isLeft in descriptions:
-            if parent not in childs:
-                root = parent
+        # The root node is the one that is never a child node
+        for parent_val, child_val, is_left in descriptions:
+            if parent_val not in children:
+                root_val = parent_val
                 break
 
-        return nodes[root]
-
-        
+        return nodes[root_val]
