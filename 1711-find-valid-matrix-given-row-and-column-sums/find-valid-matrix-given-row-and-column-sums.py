@@ -14,7 +14,7 @@ class Solution:
                 rowSum[i] -= val
                 colSum[j] -= val
                 
-                # If rowSum[i] or colSum[j] becomes zero, move to the next row or column
+                # If rowSum[i] becomes zero, move to the next row
                 if rowSum[i] == 0:
                     break
         
