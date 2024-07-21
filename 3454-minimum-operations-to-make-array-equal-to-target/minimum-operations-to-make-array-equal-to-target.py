@@ -17,7 +17,7 @@ class Solution:
                 # When dealing with negative differences
                 operations += max(0, prev_value - current_value)
                 # Check if we need to switch from negative to non-negative
-                if i < len(difference) - 1 and difference[i + 1] >= 0:
+                if i < len(difference) - 1 and difference[i + 1] > 0:
                     is_negative = False
                     prev_value = 0
                 else:
