@@ -21,10 +21,10 @@ class Solution:
 
         # Iterate over all possible pairs (i, j) to find valid triplets
         for i in range(len(prefix_xors) - 2):
-            for j in range(i + 2, len(prefix_xors)):
-                # Check if the XOR from prefix_xors[i] to prefix_xors[j] is 0
-                if prefix_xors[i] ^ prefix_xors[j] == 0:
-                    res += j - i - 1  # Increment the result by the number of valid k values
+            for k in range(i + 2, len(prefix_xors)):
+                # Check if the XOR from prefix_xors[i] to prefix_xors[k] is 0
+                if prefix_xors[i] ^ prefix_xors[k] == 0:
+                    res += k - i - 1  # Increment the result by the number of valid j values
 
         return res  # Return the total number of valid triplets
 
