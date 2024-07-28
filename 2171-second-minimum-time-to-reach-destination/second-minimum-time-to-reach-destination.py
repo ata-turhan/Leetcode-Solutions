@@ -51,4 +51,4 @@ class Solution:
                     second_shortest[neighbor] = current_time
                     heappush(min_heap, (current_time, neighbor))
         
-        return 0
+        return -1
