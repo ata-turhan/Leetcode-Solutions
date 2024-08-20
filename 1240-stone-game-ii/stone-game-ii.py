@@ -10,7 +10,7 @@ class Solution:
         for i in range(n):
             prefix_sum[i + 1] = prefix_sum[i] + piles[i]
 
-        # Helper function to get the sum of piles[i:j+1]
+        # Helper function to get the sum of piles[i:j]
         def range_sum(i: int, j: int) -> int:
             return prefix_sum[j] - prefix_sum[i]
 
