@@ -12,7 +12,7 @@ class Solution:
 
         # Helper function to get the sum of piles[i:j+1]
         def range_sum(i: int, j: int) -> int:
-            return prefix_sum[j + 1] - prefix_sum[i]
+            return prefix_sum[j] - prefix_sum[i]
 
         # Use lru_cache to memoize results of dp function for efficiency
         @lru_cache(None)
@@ -26,7 +26,7 @@ class Solution:
                 # Alice takes the maximum possible stones
                 for x in range(1, 2 * m + 1):
                     if i + x <= n:         
-                        max_stones = max(max_stones, range_sum(i, i + x - 1) + dp(i + x, max(m, x), False))
+                        max_stones = max(max_stones, range_sum(i, i + x) + dp(i + x, max(m, x), False))
                 return max_stones
             else:
                 min_stones = float("inf")
