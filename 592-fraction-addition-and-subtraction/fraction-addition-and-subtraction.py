@@ -39,7 +39,7 @@ class Solution:
             i = j
         
         # Find the Least Common Multiple (LCM) of all denominators to have a common denominator
-        common_denom = reduce(self.lcm, (denom for _, denom in fractions))
+        common_denom = reduce(lcm, (denom for _, denom in fractions))
         
         # Compute the sum of numerators after adjusting to the common denominator
         numerator_sum = sum(numerator * (common_denom // denom) for numerator, denom in fractions)
