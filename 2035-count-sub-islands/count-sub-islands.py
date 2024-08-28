@@ -22,14 +22,12 @@ class Solution:
         num_rows, num_cols = len(grid1), len(grid1[0])
         
         # Find all islands in grid1
-        grid1_islands = []
         visited_grid1 = set()
         for row in range(num_rows):
             for col in range(num_cols):
                 if grid1[row][col] == 1 and (row, col) not in visited_grid1:
                     current_island = set()
                     dfs(grid1, row, col, current_island)
-                    grid1_islands.append(current_island)
                     visited_grid1 |= current_island
 
         # Find all islands in grid2
