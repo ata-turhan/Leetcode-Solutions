@@ -11,8 +11,7 @@ class Solution:
         enemies = sorted(
             [(damage[i], health[i]) for i in range(n)],
             key=lambda x: (
-                -x[0] / math.ceil(x[1] / power),  # Higher damage per unit time first
-                math.ceil(x[1] / power)            # If tied, prefer lower health
+                -x[0] / math.ceil(x[1] / power)
             )
         )
         
