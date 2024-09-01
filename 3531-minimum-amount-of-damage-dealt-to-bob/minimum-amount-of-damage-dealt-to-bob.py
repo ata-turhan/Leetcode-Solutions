@@ -7,12 +7,9 @@ class Solution:
         
         # Combine damage and health into tuples and sort them
         # Sort primarily by the effectiveness of damage per unit time (descending)
-        # Break ties by the amount of time required to kill the enemy (ascending)
         enemies = sorted(
             [(damage[i], health[i]) for i in range(n)],
-            key=lambda x: (
-                -x[0] / math.ceil(x[1] / power)
-            )
+            key=lambda x: -x[0] / math.ceil(x[1] / power)  # Sort by damage per unit time to kill descending
         )
         
         total_damage = 0
