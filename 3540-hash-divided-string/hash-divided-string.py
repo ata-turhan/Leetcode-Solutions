@@ -1,6 +1,6 @@
 class Solution:
     def stringHash(self, s: str, k: int) -> str:
-        result = ""
+        result = []
         n = len(s)
         
         # Iterate over the string in chunks of size k
@@ -10,7 +10,7 @@ class Solution:
             hash_sum = sum(ord(ch) - ord('a') for ch in substr)
             # Determine the corresponding character for the hash sum modulo 26
             hash_char = chr((hash_sum % 26) + ord('a'))
-            # Append the calculated character to the result string
-            result += hash_char
+            # Append the calculated character to the result list
+            result.append(hash_char)
         
-        return result
+        return "".join(result)
