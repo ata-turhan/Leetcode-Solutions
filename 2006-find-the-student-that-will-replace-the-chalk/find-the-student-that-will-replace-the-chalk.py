@@ -9,4 +9,4 @@ class Solution:
         for index, chalk_needed in enumerate(chalk):
             accumulated_chalk += chalk_needed
             if k < accumulated_chalk:
-                return index  # Return the index of the student who will use the last piece of chalk
+                return index  # Return the index of the student who needs to replace the chalk
