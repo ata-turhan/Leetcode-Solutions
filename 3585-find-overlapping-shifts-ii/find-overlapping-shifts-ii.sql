@@ -19,8 +19,6 @@ WITH ShiftChanges AS (
 ConcurrentShifts AS (
     SELECT 
         employee_id, 
-        shift_date, 
-        change_time, 
         SUM(shift_change) OVER (PARTITION BY employee_id, shift_date ORDER BY change_time) AS concurrent_count
     FROM ShiftChanges
 ),
@@ -41,8 +39,8 @@ OverlapDurations AS (
         SUM(
             GREATEST(
                 TIMESTAMPDIFF(MINUTE, 
-                    GREATEST(e1.start_time, e2.start_time), 
-                    LEAST(e1.end_time, e2.end_time)
+                    e2.start_time,
+                    e1.end_time
                 ), 
                 0
             )
