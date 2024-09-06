@@ -1,21 +1,23 @@
+from typing import List, Optional, Set
+
 # Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
+class ListNode:
+    def __init__(self, val: int = 0, next: Optional['ListNode'] = None):
+        self.val = val
+        self.next = next
 
 class Solution:
     def modifiedList(self, nums: List[int], head: Optional[ListNode]) -> Optional[ListNode]:
-        # Create a set of values to be deleted
-        values_to_delete = set(nums)
+        # Create a set of values to be deleted (type hinting the set)
+        values_to_delete: Set[int] = set(nums)
 
         # Ensure the head is not part of the values to delete
         while head and head.val in values_to_delete:
             head = head.next
 
         # Initialize pointers for previous and current nodes
-        prev_node = head
-        current_node = head.next if head else None
+        prev_node: Optional[ListNode] = head
+        current_node: Optional[ListNode] = head.next if head else None
 
         # Iterate through the list
         while current_node:
