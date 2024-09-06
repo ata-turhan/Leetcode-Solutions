@@ -1,27 +1,30 @@
 from typing import List
-import math
 
 class Solution:
     def missingRolls(self, rolls: List[int], mean: int, n: int) -> List[int]:
-        # Calculate the sum of the existing rolls and the total expected sum
-        sum_m = sum(rolls)
-        len_m = len(rolls)
-        total_sum = mean * (n + len_m)
-        sum_n = total_sum - sum_m
+        # Calculate the sum of the existing rolls
+        sum_existing_rolls: int = sum(rolls)
+        len_existing_rolls: int = len(rolls)
         
-        # The sum of the missing rolls should be between n and 6 * n
-        if not (n <= sum_n <= 6 * n):
+        # Calculate the total sum required for the entire set of rolls
+        total_required_sum: int = mean * (n + len_existing_rolls)
+        
+        # Calculate the sum that must be provided by the missing rolls
+        sum_missing_rolls: int = total_required_sum - sum_existing_rolls
+        
+        # Check if the sum of missing rolls is within the possible bounds
+        if not (n <= sum_missing_rolls <= 6 * n):
             return []
 
-        # Determine the base value for each of the missing rolls
-        base_value = sum_n // n
-        extras = sum_n % n
+        # Calculate the base value for each missing roll and how many extras are left
+        base_value: int = sum_missing_rolls // n
+        extra_rolls: int = sum_missing_rolls % n
         
-        # Construct the missing rolls array
-        missing_rolls = [base_value] * n
+        # Construct the missing rolls list initialized with the base value
+        missing_rolls: List[int] = [base_value] * n
         
-        # Distribute the remaining extras to the first few rolls
-        for i in range(extras):
+        # Distribute the extra values across the first few rolls
+        for i in range(extra_rolls):
             missing_rolls[i] += 1
         
         return missing_rolls
