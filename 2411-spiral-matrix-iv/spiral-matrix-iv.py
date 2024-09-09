@@ -9,7 +9,7 @@ class ListNode:
 class Solution:
     def spiralMatrix(self, m: int, n: int, head: Optional[ListNode]) -> List[List[int]]:
         # Step 1: Initialize a matrix filled with -1 (default values)
-        matrix: List[List[int]] = [[-1 for _ in range(n)] for _ in range(m)]
+        matrix: List[List[int]] = [[-1] * n for _ in range(m)]
         
         # Step 2: Initialize the boundary pointers for the spiral traversal
         top, bottom, left, right = 0, m - 1, 0, n - 1
