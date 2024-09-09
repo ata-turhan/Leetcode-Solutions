@@ -1,19 +1,23 @@
+from typing import List, Optional
+
 # Definition for singly-linked list.
-# class ListNode:
-#     def __init__(self, val=0, next=None):
-#         self.val = val
-#         self.next = next
+class ListNode:
+    def __init__(self, val: int = 0, next: Optional['ListNode'] = None):
+        self.val = val
+        self.next = next
+
 class Solution:
     def spiralMatrix(self, m: int, n: int, head: Optional[ListNode]) -> List[List[int]]:
-        # Step 1: Initialize matrix filled with -1
-        matrix = [[-1 for _ in range(n)] for _ in range(m)]
+        # Step 1: Initialize a matrix filled with -1 (default values)
+        matrix: List[List[int]] = [[-1 for _ in range(n)] for _ in range(m)]
         
-        # Step 2: Initialize boundaries
+        # Step 2: Initialize the boundary pointers for the spiral traversal
         top, bottom, left, right = 0, m - 1, 0, n - 1
         
-        # Step 3: Traverse the linked list and fill the matrix
-        current_node = head
+        # Step 3: Pointer to traverse the linked list
+        current_node: Optional[ListNode] = head
         
+        # Step 4: Traverse the matrix in a spiral order
         while top <= bottom and left <= right:
             # Traverse from left to right along the top row
             for col in range(left, right + 1):
@@ -21,7 +25,7 @@ class Solution:
                     matrix[top][col] = current_node.val
                     current_node = current_node.next
                 else:
-                    return matrix
+                    return matrix  # If the list ends, return the matrix
             top += 1  # Shrink the top boundary
             
             # Traverse from top to bottom along the right column
