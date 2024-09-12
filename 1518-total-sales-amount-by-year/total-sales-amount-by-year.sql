@@ -31,9 +31,6 @@ JOIN
     Product p ON s.product_id = p.product_id  -- Join Sales with Product to get product name
 JOIN 
     sales_years y ON y.report_year BETWEEN YEAR(s.period_start) AND YEAR(s.period_end)  -- Join with sales_years for overlapping years
-WHERE
-    s.period_start <= y.year_end  -- Ensure sales period is within the reporting year range
-    AND s.period_end >= y.year_start
 GROUP BY
     s.product_id, p.product_name, y.report_year  -- Group by product ID, name, and report year
 ORDER BY
