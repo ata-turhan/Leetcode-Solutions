@@ -1,15 +1,19 @@
+from typing import List
+
 class Solution:
     def xorQueries(self, arr: List[int], queries: List[List[int]]) -> List[int]:
-        prefix_xor = [0]
-        xor_val = 0
+        # Compute the prefix XOR array
+        prefix_xor: List[int] = [0]
+        xor_val: int = 0
+        
+        # Build the prefix XOR array
         for num in arr:
             xor_val ^= num
             prefix_xor.append(xor_val)
 
-        res = []
+        # Process each query and compute the XOR for the range [start, end]
+        result: List[int] = []
         for start, end in queries:
-            res.append(prefix_xor[end+1] ^ prefix_xor[start])
+            result.append(prefix_xor[end + 1] ^ prefix_xor[start])
 
-        return res
-
-        
+        return result
