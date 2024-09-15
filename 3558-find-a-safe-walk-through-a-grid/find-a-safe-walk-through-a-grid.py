@@ -51,13 +51,8 @@ class Solution:
                         # Update the minimum cost to reach the adjacent cell
                         min_cost[nx][ny] = new_cost
 
-                        # If the adjacent cell is safe (grid[nx][ny] == 0)
-                        if grid[nx][ny] == 0:
-                            # Prioritize safe cells by adding them to the front of the deque
-                            queue.appendleft((nx, ny))
-                        else:
-                            # Unsafe cells are added to the back of the deque
-                            queue.append((nx, ny))
+
+                        queue.append((nx, ny))
 
         # If we exit the loop without returning True, the destination is not reachable within the health constraints
         return False  # No viable path found
