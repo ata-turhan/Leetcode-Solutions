@@ -7,7 +7,7 @@ class Solution:
 
         # Iterate through nums to build the stack with increasing elements
         for i in range(1, len(nums) - 1):
-            if nums[i] >= nums[index_stack[-1]]:
+            if nums[i] > nums[index_stack[-1]]:
                 index_stack.append(i)
 
         # Append the last index to the stack
