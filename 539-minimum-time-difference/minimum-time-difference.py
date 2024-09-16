@@ -1,16 +1,24 @@
+from typing import List
+
 class Solution:
     def findMinDifference(self, timePoints: List[str]) -> int:
-        minutes = []
-        for timePoint in timePoints:
-            minute = int(timePoint[:2]) * 60 + int(timePoint[3:])
-            minutes.append(minute)
+        # Convert time points to minutes since midnight
+        time_in_minutes: List[int] = []
+        for time_point in timePoints:
+            total_minutes: int = int(time_point[:2]) * 60 + int(time_point[3:])
+            time_in_minutes.append(total_minutes)
 
-        minutes.sort()
-        min_diff = float("inf")
-        for i in range(1, len(minutes)):
-            min_diff = min(min_diff, minutes[i] - minutes[i-1])
+        # Sort the time points in minutes
+        time_in_minutes.sort()
 
-        min_diff = min(min_diff, 24*60 - (minutes[-1] - minutes[0]))
+        # Initialize the minimum difference as infinity
+        min_difference: int = float("inf")
 
-        return min_diff
-        
+        # Find the minimum difference between consecutive time points
+        for i in range(1, len(time_in_minutes)):
+            min_difference = min(min_difference, time_in_minutes[i] - time_in_minutes[i - 1])
+
+        # Account for the circular nature of time (difference between the last and first point)
+        min_difference = min(min_difference, 24 * 60 - (time_in_minutes[-1] - time_in_minutes[0]))
+
+        return min_difference
