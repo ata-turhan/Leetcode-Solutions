@@ -19,7 +19,7 @@ class Solution:
                     totalReduction += x
                 if totalReduction >= mountainHeight:
                     return True
-            return totalReduction >= mountainHeight
+            return False
 
         left = 1
         # Set an upper bound for right based on the maximum possible time
