@@ -3,14 +3,14 @@ class MyCircularDeque:
     def __init__(self, k: int):
         self.capacity = k  # Use exactly k elements
         self.deque = [0] * self.capacity  # Initialize deque with zeros
-        self.front = 0  # Front pointer
+        self.front = self.capacity  # Front pointer
         self.rear = 0  # Rear pointer
         self.size = 0  # Tracks current number of elements
 
     def insertFront(self, value: int) -> bool:
         if self.isFull():
             return False
-        self.front = (self.front - 1 + self.capacity) % self.capacity  # Move front pointer back
+        self.front = (self.front - 1) % self.capacity  # Move front pointer back
         self.deque[self.front] = value  # Insert the value at front
         self.size += 1  # Increment size
         return True
