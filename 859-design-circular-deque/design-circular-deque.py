@@ -33,7 +33,7 @@ class MyCircularDeque:
     def deleteLast(self) -> bool:
         if self.isEmpty():
             return False
-        self.rear = (self.rear - 1 + self.capacity) % self.capacity  # Move rear pointer back to delete
+        self.rear = (self.rear - 1) % self.capacity  # Move rear pointer back to delete
         self.size -= 1  # Decrement size
         return True
 
@@ -45,7 +45,7 @@ class MyCircularDeque:
     def getRear(self) -> int:
         if self.isEmpty():
             return -1
-        return self.deque[(self.rear - 1 + self.capacity) % self.capacity]  # Return rear element
+        return self.deque[(self.rear - 1) % self.capacity]  # Return rear element
 
     def isEmpty(self) -> bool:
         return self.size == 0  # Deque is empty when size is 0
