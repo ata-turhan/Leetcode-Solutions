@@ -22,8 +22,7 @@ class Solution:
             if needed_rem in remainder_map:
                 subarray_len = i - remainder_map[needed_rem]
                 # Update the minimum subarray length
-                if subarray_len < len(nums):
-                    min_len = min(min_len, subarray_len)
+                min_len = min(min_len, subarray_len)
 
             # Store the current remainder with its index
             remainder_map[current_rem] = i
