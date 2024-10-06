@@ -1,34 +1,43 @@
 class Solution:
     def areSentencesSimilar(self, sentence1: str, sentence2: str) -> bool:
-        s1_list = sentence1.split(" ")
-        s2_list = sentence2.split(" ")
-        if len(s1_list) < len(s2_list):
-            shorter = s1_list
-            longer = s2_list
+        # Split the sentences into words
+        words1 = sentence1.split(" ")
+        words2 = sentence2.split(" ")
+
+        # Ensure that words1 refers to the longer sentence
+        if len(words1) < len(words2):
+            shorter_sentence, longer_sentence = words1, words2
         else:
-            longer = s1_list
-            shorter = s2_list
-        if shorter == longer[:len(shorter)]:
+            longer_sentence, shorter_sentence = words1, words2
+
+        # Check if the shorter sentence matches the start of the longer sentence
+        if shorter_sentence == longer_sentence[:len(shorter_sentence)]:
             return True
-        elif shorter == longer[-len(shorter):]:
+
+        # Check if the shorter sentence matches the end of the longer sentence
+        elif shorter_sentence == longer_sentence[-len(shorter_sentence):]:
             return True
-        longer_idx = 0
-        shorter_idx = 0
-        while longer_idx < len(longer):
-            if longer[longer_idx] == shorter[shorter_idx]:
-                shorter_idx += 1
-                longer_idx += 1
+
+        # Now, check for matches in the middle of the longer sentence
+        longer_index = 0
+        shorter_index = 0
+
+        # Try to match the words from the beginning
+        while longer_index < len(longer_sentence):
+            if longer_sentence[longer_index] == shorter_sentence[shorter_index]:
+                shorter_index += 1
+                longer_index += 1
             else:
                 break
-        longer_idx = len(longer) - (len(shorter) - shorter_idx)
-        while longer_idx < len(longer):
-            if longer[longer_idx] == shorter[shorter_idx]:
-                shorter_idx += 1
-                longer_idx += 1
+
+        # Adjust the index to match words from the end
+        longer_index = len(longer_sentence) - (len(shorter_sentence) - shorter_index)
+        while longer_index < len(longer_sentence):
+            if longer_sentence[longer_index] == shorter_sentence[shorter_index]:
+                shorter_index += 1
+                longer_index += 1
             else:
                 break
-        
-        return shorter_idx == len(shorter)
 
-
-        
+        # If all words of the shorter sentence were matched, return True
+        return shorter_index == len(shorter_sentence)
