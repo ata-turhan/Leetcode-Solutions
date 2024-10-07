@@ -1,17 +1,16 @@
 class Solution:
     def minLength(self, s: str) -> int:
-        s_arr = list(s)
+        # Convert the string into a list for easy manipulation
         stack = []
-        for char in s_arr:
+        
+        # Iterate through each character in the string
+        for char in s:
             stack.append(char)
-            while len(stack) >= 2:
-                last_two = stack[-2] + stack[-1]
-                if last_two in ("AB", "CD"):
-                    stack.pop()
-                    stack.pop()
-                else:
-                    break
+            
+            # Check if the last two characters form "AB" or "CD"
+            while len(stack) >= 2 and (stack[-2] + stack[-1]) in ("AB", "CD"):
+                stack.pop()  # Remove the last character
+                stack.pop()  # Remove the second-to-last character
 
-        min_str = "".join(stack)
-        return len(min_str)
-                
+        # The final length of the remaining characters in the stack
+        return len(stack)
