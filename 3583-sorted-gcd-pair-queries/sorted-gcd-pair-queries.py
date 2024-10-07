@@ -5,7 +5,6 @@ class Solution:
     def gcdValues(self, nums: List[int], queries: List[int]) -> List[int]:
         # Step 1: Find the maximum value in the array to set the size of the counting array
         max_value = max(nums)
-        n = len(nums)
         
         # Step 2: Count the occurrences of each number in nums
         count_nums = [0] * (max_value + 1)
@@ -39,7 +38,6 @@ class Solution:
             positions.append(positions[-1] + count)
 
         # Step 7: Process the queries using binary search on the positions
-        total_pairs = positions[-1]
         result = []
         for q in queries:
             index = bisect.bisect_right(positions, q) - 1
