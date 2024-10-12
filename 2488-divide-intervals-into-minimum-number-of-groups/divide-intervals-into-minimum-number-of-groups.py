@@ -1,13 +1,21 @@
+from typing import List
+
 class Solution:
     def minGroups(self, intervals: List[List[int]]) -> int:
-        starts = [(start, -1) for start, _ in intervals]
-        ends = [(end, 1) for _, end in intervals]
-        times = starts + ends
-        times.sort()
-        max_intersection = 0
-        running_sum = 0
-        for time in times:
-            _, value = time
-            running_sum += value
-            max_intersection = max(max_intersection, abs(running_sum))
-        return max_intersection
+        # Create events for starting (-1) and ending (+1) points of intervals
+        start_events = [(start, 1) for start, _ in intervals]
+        end_events = [(end + 1, -1) for _, end in intervals]  # end + 1 to mark the end of an interval
+        
+        # Combine and sort all the events
+        events = start_events + end_events
+        events.sort()
+
+        max_groups = 0
+        active_groups = 0
+        
+        # Traverse through each event, adjusting active group count
+        for _, value in events:
+            active_groups += value
+            max_groups = max(max_groups, active_groups)
+        
+        return max_groups
