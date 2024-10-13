@@ -2,7 +2,7 @@ from typing import List
 
 class Solution:
     def minGroups(self, intervals: List[List[int]]) -> int:
-        # Create events for starting (-1) and ending (+1) points of intervals
+        # Create events for starting and ending points of intervals
         start_events = [(start, 1) for start, _ in intervals]
         end_events = [(end + 1, -1) for _, end in intervals]  # end + 1 to mark the end of an interval
         
