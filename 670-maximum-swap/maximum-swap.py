@@ -1,17 +1,20 @@
 class Solution:
     def maximumSwap(self, num: int) -> int:
+        # Convert the number into a list of digits
         num_arr = list(map(int, str(num)))
-        max_val = -1
-        max_idx = -1 
-        for i in range(len(num_arr)-1):
-            for j in range(i+1, len(num_arr)):
-                if num_arr[j] > num_arr[i] and num_arr[j] >= max_val:
-                    max_val = num_arr[j]
-                    max_idx = j
-            if max_val != -1:
-                num_arr[i], num_arr[max_idx] = num_arr[max_idx], num_arr[i]
-                return int("".join(map(str, num_arr)))
-        return num
-                    
-
         
+        # Record the last occurrence of each digit
+        last_occurrence = {digit: i for i, digit in enumerate(num_arr)}
+        
+        # Traverse the digits of the number
+        for i in range(len(num_arr)):
+            # Check if there's a larger digit later in the number
+            for d in range(9, num_arr[i], -1):
+                if last_occurrence.get(d, -1) > i:
+                    # Swap the current digit with the largest possible digit
+                    num_arr[i], num_arr[last_occurrence[d]] = num_arr[last_occurrence[d]], num_arr[i]
+                    # Convert the list of digits back to an integer and return
+                    return int("".join(map(str, num_arr)))
+        
+        # If no swap was made, return the original number
+        return num
