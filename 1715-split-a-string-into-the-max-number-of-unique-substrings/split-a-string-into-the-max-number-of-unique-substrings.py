@@ -4,15 +4,16 @@ class Solution:
             # Base case: if we reach the end of the string
             if index == len(s):
                 # If there's a valid current substring left, count it
-                return 1 if current_substr and current_substr not in used_substrs else 0
+                return 1 if current_substr and current_substr not in used_substrs else -math.inf
 
             # Case 1: Continue adding characters to the current substring
-            continue_substr = find_max_substrs(index + 1, current_substr + s[index], used_substrs.copy())
+            continue_substr = find_max_substrs(index + 1, current_substr + s[index], used_substrs)
 
             # Case 2: Check if we can start a new substring (if current_substr is valid and not in used_substrs)
             if current_substr and current_substr not in used_substrs:
                 used_substrs.add(current_substr)
                 start_new_substr = 1 + find_max_substrs(index + 1, s[index], used_substrs)
+                used_substrs.remove(current_substr)
             else:
                 start_new_substr = continue_substr
 
