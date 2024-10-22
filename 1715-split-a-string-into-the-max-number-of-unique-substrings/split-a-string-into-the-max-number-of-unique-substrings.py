@@ -15,7 +15,7 @@ class Solution:
                 start_new_substr = 1 + find_max_substrs(index + 1, s[index], used_substrs)
                 used_substrs.remove(current_substr)
             else:
-                start_new_substr = continue_substr
+                return continue_substr
 
             # Return the maximum result between continuing or starting a new substring
             return max(continue_substr, start_new_substr)
