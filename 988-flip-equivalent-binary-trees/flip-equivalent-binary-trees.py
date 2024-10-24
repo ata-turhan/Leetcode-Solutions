@@ -4,15 +4,23 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
 class Solution:
     def flipEquiv(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
-        def isFlipEqual(node1, node2):
-            if not (node1 and node2):
-                return not (node1 or node2)
-            
+        def isFlipEquivalent(node1: Optional[TreeNode], node2: Optional[TreeNode]) -> bool:
+            # If both nodes are None, they are equivalent
+            if not node1 and not node2:
+                return True
+            # If one is None and the other is not, they are not equivalent
+            if not node1 or not node2:
+                return False
+            # If their values are not the same, they are not equivalent
             if node1.val != node2.val:
                 return False
 
-            return (isFlipEqual(node1.left, node2.left) and isFlipEqual(node1.right, node2.right)) or (isFlipEqual(node1.left, node2.right) and isFlipEqual(node1.right, node2.left))
+            # Check if the left and right children are equivalent in flipped or unflipped form
+            return (isFlipEquivalent(node1.left, node2.left) and isFlipEquivalent(node1.right, node2.right)) or \
+                   (isFlipEquivalent(node1.left, node2.right) and isFlipEquivalent(node1.right, node2.left))
 
-        return isFlipEqual(root1, root2)     
+        # Start the recursion from the root nodes
+        return isFlipEquivalent(root1, root2)
