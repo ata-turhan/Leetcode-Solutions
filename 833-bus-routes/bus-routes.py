@@ -3,15 +3,15 @@ from typing import List
 
 class Solution:
     def numBusesToDestination(self, routes: List[List[int]], source: int, target: int) -> int:
+        # If source and target are the same, no buses are needed
+        if source == target:
+            return 0
+
         # Map to keep track of buses (by index) accessible from each stop
         stop_to_buses = defaultdict(set)
         for bus_index, route in enumerate(routes):
             for stop in route:
                 stop_to_buses[stop].add(bus_index)
-
-        # If source and target are the same, no buses are needed
-        if source == target:
-            return 0
 
         # Initialize BFS
         steps = 0
