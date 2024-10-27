@@ -3,12 +3,12 @@ from typing import List
 class Solution:
     def countSquares(self, matrix: List[List[int]]) -> int:
         rows, cols = len(matrix), len(matrix[0])
-        sum_val = 0
+        total_squares = 0  # Initialize to track the total count of square submatrices
 
         # Iterate through each cell in the matrix
         for i in range(rows):
             for j in range(cols):
-                # Initialize surrounding values for boundary cells
+                # Track adjacent squares to the left, above, and top-left diagonal
                 left_square, top_square, diagonal_square = 0, 0, 0
                 
                 # Retrieve values of adjacent squares if within bounds
@@ -19,11 +19,11 @@ class Solution:
                 if i > 0 and j > 0:
                     diagonal_square = matrix[i - 1][j - 1]
 
-                # Update the current cell if it's part of a square (value is 1)
+                # Update the current cell if it can form a square (if cell value is 1)
                 if matrix[i][j] == 1:
                     matrix[i][j] = min(left_square, top_square, diagonal_square) + 1
 
-                sum_val += matrix[i][j]
+                # Add the square size at this cell to the total count
+                total_squares += matrix[i][j]
 
-        # Sum up all values in the matrix for the total number of square submatrices
-        return sum_val
+        return total_squares
