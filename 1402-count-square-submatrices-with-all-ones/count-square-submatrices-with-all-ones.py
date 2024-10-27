@@ -3,6 +3,7 @@ from typing import List
 class Solution:
     def countSquares(self, matrix: List[List[int]]) -> int:
         rows, cols = len(matrix), len(matrix[0])
+        sum_val = 0
 
         # Iterate through each cell in the matrix
         for i in range(rows):
@@ -22,5 +23,7 @@ class Solution:
                 if matrix[i][j] == 1:
                     matrix[i][j] = min(left_square, top_square, diagonal_square) + 1
 
+                sum_val += matrix[i][j]
+
         # Sum up all values in the matrix for the total number of square submatrices
-        return sum(sum(row) for row in matrix)
+        return sum_val
