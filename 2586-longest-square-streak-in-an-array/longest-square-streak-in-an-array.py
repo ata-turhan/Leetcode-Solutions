@@ -1,15 +1,24 @@
+from typing import List
+from collections import Counter
+
 class Solution:
     def longestSquareStreak(self, nums: List[int]) -> int:
-        counter = Counter(nums)
-        longest_streak = 0
-        for num in counter:
-            cur_streak = 0
-            while num in counter:
-                cur_streak += 1
-                num **= 2
-            longest_streak = max(longest_streak, cur_streak)
+        # Count occurrences of each number in the list
+        frequency_map = Counter(nums)
+        max_streak = 0
 
-        return longest_streak if longest_streak > 1 else -1
+        # Iterate through each unique number in the frequency map
+        for num in frequency_map:
+            current_streak = 0
+            current_num = num
+            
+            # Keep squaring the number if it exists in the frequency map
+            while current_num in frequency_map:
+                current_streak += 1
+                current_num **= 2
+            
+            # Update the max streak if the current streak is longer
+            max_streak = max(max_streak, current_streak)
 
-
-        
+        # Return the longest streak, or -1 if no valid streak is found
+        return max_streak if max_streak > 1 else -1
