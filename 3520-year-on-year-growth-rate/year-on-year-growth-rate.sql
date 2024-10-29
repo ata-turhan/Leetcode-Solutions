@@ -15,11 +15,11 @@ yearly_comparison AS (
         year_val, 
         product_id, 
         total_spend AS curr_year_spend, 
-        LAG(total_spend) OVER (PARTITION BY product_id ORDER BY year_val ASC) AS prev_year_spend 
+        LAG(total_spend, 1) OVER (PARTITION BY product_id ORDER BY year_val ASC) AS prev_year_spend 
     FROM 
         annual_sales
 )
--- Calculate YoY growth rate and handle potential NULL values in previous year
+-- Calculate YoY growth rate
 SELECT 
     year_val AS year, 
     product_id, 
