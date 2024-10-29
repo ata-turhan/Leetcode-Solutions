@@ -1,9 +1,30 @@
-with sales_by_years as (
-    select product_id, year(transaction_date) as year_val, sum(spend) as total_spend from user_transactions group by product_id, year_val
+WITH annual_sales AS (
+    -- Summarize total spend for each product per year
+    SELECT 
+        product_id, 
+        YEAR(transaction_date) AS year_val, 
+        SUM(spend) AS total_spend 
+    FROM 
+        user_transactions 
+    GROUP BY 
+        product_id, year_val
 ),
-sales_by_cur_and_prev_years as (
-    select year_val, product_id, total_spend as curr_year_spend, lag(total_spend, 1) over (partition by product_id order by year_val asc) as prev_year_spend from sales_by_years
+yearly_comparison AS (
+    -- Calculate the current and previous year spend for each product
+    SELECT 
+        year_val, 
+        product_id, 
+        total_spend AS curr_year_spend, 
+        LAG(total_spend) OVER (PARTITION BY product_id ORDER BY year_val ASC) AS prev_year_spend 
+    FROM 
+        annual_sales
 )
-select year_val as year, product_id, curr_year_spend, prev_year_spend,
-round((curr_year_spend - prev_year_spend) / prev_year_spend * 100, 2) as yoy_rate 
- from sales_by_cur_and_prev_years;
+-- Calculate YoY growth rate and handle potential NULL values in previous year
+SELECT 
+    year_val AS year, 
+    product_id, 
+    curr_year_spend, 
+    prev_year_spend,
+    ROUND((curr_year_spend - prev_year_spend) / prev_year_spend * 100, 2) AS yoy_rate
+FROM 
+    yearly_comparison;
