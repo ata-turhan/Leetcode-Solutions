@@ -1,7 +1,22 @@
-with activity_with_ranks_and_next_dates as (
-    select event_date, rank() over (partition by player_id order by event_date asc) as day_rank, lead(event_date, 1) over (partition by player_id order by event_date asc) as next_date from activity
+WITH activity_ranked AS (
+    SELECT 
+        event_date, 
+        RANK() OVER (PARTITION BY player_id ORDER BY event_date ASC) AS day_rank,
+        LEAD(event_date) OVER (PARTITION BY player_id ORDER BY event_date ASC) AS next_date
+    FROM activity
 ),
-dates_and_retention as (
-    select event_date, datediff(next_date, event_date) = 1 as has_retention from activity_with_ranks_and_next_dates where day_rank = 1
+dates_retention_calculated AS (
+    SELECT 
+        event_date, 
+        CASE WHEN DATEDIFF(next_date, event_date) = 1 THEN 1 ELSE 0 END AS has_retention
+    FROM activity_ranked
+    WHERE day_rank = 1
 )
-select event_date as install_dt, count(event_date) as installs, round(sum(ifnull(has_retention, 0)) / count(event_date), 2) as Day1_retention  from dates_and_retention group by event_date
+SELECT 
+    event_date AS install_dt, 
+    COUNT(event_date) AS installs, 
+    ROUND(SUM(has_retention) / COUNT(event_date), 2) AS Day1_retention
+FROM 
+    dates_retention_calculated
+GROUP BY 
+    event_date;
