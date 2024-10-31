@@ -15,7 +15,7 @@ dates_retention_calculated AS (
 SELECT 
     event_date AS install_dt, 
     COUNT(event_date) AS installs, 
-    ROUND(SUM(has_retention) / COUNT(event_date), 2) AS Day1_retention
+    ROUND(AVG(has_retention), 2) AS Day1_retention
 FROM 
     dates_retention_calculated
 GROUP BY 
