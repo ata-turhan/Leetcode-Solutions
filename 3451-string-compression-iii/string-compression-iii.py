@@ -7,7 +7,7 @@ class Solution:
         :param word: str - The input string to be compressed.
         :return: str - The compressed string.
         """
-        result = ""
+        result = []
         previous_char = ""
         count = 0
 
@@ -16,23 +16,18 @@ class Solution:
                 count += 1
                 # If count reaches 9, append the compressed part and reset
                 if count == 9:
-                    result += f"{count}{previous_char}"
+                    result.append(f"{count}{previous_char}")
                     previous_char = ""
                     count = 0
             else:
                 # Append the compressed part of the previous character
                 if count > 0:
-                    result += f"{count}{previous_char}"
+                    result.append(f"{count}{previous_char}")
                 previous_char = char
                 count = 1
         
         # Append the remaining characters
         if count != 0:
-            result += f"{count}{previous_char}"
+            result.append(f"{count}{previous_char}")
         
-        return result
-
-# Example usage:
-# sol = Solution()
-# print(sol.compressedString("aaabbbccca"))  # Output: "3a3b3c1a"
-# print(sol.compressedString("aaaaaaaaaa"))  # Output: "9a1a"
+        return "".join(result)
