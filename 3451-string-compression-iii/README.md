@@ -13,8 +13,6 @@
 <p>Return the string <code>comp</code>.</p>
 
 <p>&nbsp;</p>
-
-<p>&nbsp;</p>
 <p><strong class="example">Example 1:</strong></p>
 
 <div class="example-block">
