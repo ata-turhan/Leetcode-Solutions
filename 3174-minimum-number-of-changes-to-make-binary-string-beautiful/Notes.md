@@ -1,0 +1,1 @@
+<h2>minimum-number-of-changes-to-make-binary-string-beautiful Notes</h2><hr>[ Time taken: 10 m 12 s ]
