@@ -1,36 +1,32 @@
+from typing import List
+
 class Solution:
     def canSortArray(self, nums: List[int]) -> bool:
-        def get_bit_count(num):
+        # Function to get the count of '1' bits in the binary representation of a number
+        def count_bits(num):
             return bin(num).count("1")
 
-        def swap(i, j):
-            if bit_counts[nums[i]] != bit_counts[nums[j]]:
-                return False
-            else:
-                nums[i], nums[j] = nums[j], nums[i]
-                return True
+        # Cache bit counts for each unique number in nums
+        bit_counts = {num: count_bits(num) for num in set(nums)}
 
-        bit_counts = dict()
-        for num in nums:
-            if num not in bit_counts:
-                bit_counts[num] = get_bit_count(num)
-
+        # Create groups of numbers based on their bit counts, tracking min and max in each group
         groups = []
-        prev_bit_count = bit_counts[nums[0]]
-        min_num = 2**9
-        max_num = 0
+        current_bit_count = bit_counts[nums[0]]
+        min_num, max_num = nums[0], nums[0]
+
         for num in nums:
-            if prev_bit_count == bit_counts[num]:
+            # If current num has the same bit count as previous, update min and max in the current group
+            if bit_counts[num] == current_bit_count:
                 min_num = min(min_num, num)
                 max_num = max(max_num, num)
             else:
-                groups.append(min_num)
-                groups.append(max_num)
-                prev_bit_count = bit_counts[num]
-                min_num = num
-                max_num = num
+                # Append min and max of the finished group and reset for new group
+                groups.extend([min_num, max_num])
+                current_bit_count = bit_counts[num]
+                min_num, max_num = num, num
 
-        groups.append(min_num)
-        groups.append(max_num)
+        # Append the min and max of the last group
+        groups.extend([min_num, max_num])
 
+        # Check if the groups' min-max values are sorted, indicating array can be sorted with swaps
         return groups == sorted(groups)
