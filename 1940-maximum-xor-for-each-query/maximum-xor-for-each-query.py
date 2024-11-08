@@ -10,13 +10,13 @@ class Solution:
         # Iterate from the last index to the first
         for i in range(len(nums) - 1, -1, -1):
             # Initialize k to hold the maximum XOR result for the current total_xor
-            max_xor = 0
+            k = 0
             for bit_position in range(maximumBit):
                 # Set each bit in k to the opposite of the corresponding bit in total_xor
-                max_xor |= (((total_xor >> bit_position) & 1) ^ 1) << bit_position
+                k |= (((total_xor >> bit_position) & 1) ^ 1) << bit_position
 
-            # Append the current max_xor result to the results list
-            results.append(max_xor)
+            # Append the current k result to the results list
+            results.append(k)
 
             # Update total_xor by removing the effect of nums[i]
             total_xor ^= nums[i]
