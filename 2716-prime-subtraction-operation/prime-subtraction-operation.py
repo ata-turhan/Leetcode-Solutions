@@ -15,21 +15,16 @@ class Solution:
         n = len(nums)
         
         prev = 0
-        for i in range(n):
-            adjusted = False
-            # Try to subtract the largest possible prime to minimize nums[i]
-            for p in reversed(primes):
-                if p < nums[i]:
-                    x = nums[i] - p
-                    if x > prev:
-                        nums[i] = x
-                        adjusted = True
-                        break
-            if not adjusted:
-                if nums[i] <= prev:
-                    return False
-                else:
-                    prev = nums[i]
-            else:
-                prev = nums[i]
+        for num in nums:
+            # Compute the maximum prime p such that num - p > prev
+            max_p = num - prev - 1
+            # Find the largest prime less than or equal to max_p
+            idx = bisect.bisect_right(primes, max_p) - 1
+            if idx >= 0 and primes[idx] < num:
+                p = primes[idx]
+                num -= p
+            # Check if the adjusted num is strictly greater than prev
+            if num <= prev:
+                return False
+            prev = num
         return True
