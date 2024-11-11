@@ -12,14 +12,13 @@ class Solution:
             return primes
 
         primes = sieve_of_eratosthenes(1000)  # Since nums[i] <= 1000
-        n = len(nums)
         
         prev = 0
         for num in nums:
             # Compute the maximum prime p such that num - p > prev
             max_p = num - prev - 1
             # Find the largest prime less than or equal to max_p
-            idx = bisect.bisect_right(primes, max_p) - 1
+            idx = bisect.bisect(primes, max_p) - 1
             if idx >= 0 and primes[idx] < num:
                 p = primes[idx]
                 num -= p
