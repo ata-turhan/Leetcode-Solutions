@@ -7,7 +7,7 @@ class Solution:
             price_beauty[price] = beauty
 
         best_beauty_so_far = 0
-        for price, beauty in sorted(price_beauty.items()):
+        for price, beauty in price_beauty.items():
             best_beauty_so_far = max(best_beauty_so_far, beauty)
             price_beauty[price] = best_beauty_so_far
 
