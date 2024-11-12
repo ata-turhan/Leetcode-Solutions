@@ -1,27 +1,35 @@
+from typing import List
+import bisect
+
 class Solution:
     def maximumBeauty(self, items: List[List[int]], queries: List[int]) -> List[int]:
+        # Sort items by price for efficient processing
         items.sort()
-        price_beauty = {}
         
+        # Dictionary to store maximum beauty at each price point
+        max_beauty_by_price = {}
+        
+        # Populate max_beauty_by_price dictionary with highest beauty seen so far at each price
         for price, beauty in items:
-            price_beauty[price] = beauty
+            max_beauty_by_price[price] = beauty
 
-        best_beauty_so_far = 0
-        for price, beauty in price_beauty.items():
-            best_beauty_so_far = max(best_beauty_so_far, beauty)
-            price_beauty[price] = best_beauty_so_far
+        # Update max_beauty_by_price so each price has the maximum beauty up to that price
+        highest_beauty = 0
+        for price in max_beauty_by_price:
+            highest_beauty = max(highest_beauty, max_beauty_by_price[price])
+            max_beauty_by_price[price] = highest_beauty
 
-        prices = sorted(price for price in price_beauty)
-        res = []
-        for query in queries:
-            q_idx = bisect.bisect_right(prices, query)
-            if q_idx == 0:
-                res.append(0)
+        # Extract sorted list of prices for binary search
+        sorted_prices = sorted(max_beauty_by_price)
+        results = []
+        
+        # For each query, find the maximum beauty within the budget
+        for budget in queries:
+            # Locate the highest price within the budget
+            index = bisect.bisect_right(sorted_prices, budget)
+            if index == 0:
+                results.append(0)  # No items affordable within budget
             else:
-                res.append(price_beauty[prices[q_idx-1]])
+                results.append(max_beauty_by_price[sorted_prices[index - 1]])
 
-        return res
-
-
-        
-        
+        return results
