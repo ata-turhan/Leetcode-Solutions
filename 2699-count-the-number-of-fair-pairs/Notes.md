@@ -1,0 +1,1 @@
+<h2>count-the-number-of-fair-pairs Notes</h2><hr>[ Time taken: 20 m 8 s ]
