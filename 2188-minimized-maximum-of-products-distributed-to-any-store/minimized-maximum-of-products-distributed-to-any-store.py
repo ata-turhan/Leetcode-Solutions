@@ -20,7 +20,7 @@ class Solution:
             mid = (left + right) // 2
             # If the current mid can be used as the max size for each store
             if can_distribute(mid):
-                minimized_maximum = min(minimized_maximum, mid)
+                minimized_maximum = mid
                 right = mid - 1  # Try for a smaller maximum size
             else:
                 left = mid + 1  # Increase mid to allow for larger store sizes
