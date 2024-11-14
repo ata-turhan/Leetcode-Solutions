@@ -1,19 +1,28 @@
+from typing import List
+import math
+
 class Solution:
     def minimizedMaximum(self, n: int, quantities: List[int]) -> int:
-        def can_distribute(size):
-            store_counts = 0
+        # Helper function to check if a given max_size allows distribution to 'n' stores
+        def can_distribute(max_size):
+            required_stores = 0
             for quantity in quantities:
-                store_counts += math.ceil(quantity / size)
-            return store_counts <= n
+                # Calculate the number of stores needed if each store can have up to max_size items
+                required_stores += math.ceil(quantity / max_size)
+            return required_stores <= n
 
+        # Initialize binary search bounds
         left, right = 1, max(quantities)
-        min_max_count = right + 1
+        minimized_maximum = right + 1
+
+        # Binary search to find the minimum possible max size for each store
         while left <= right:
             mid = (left + right) // 2
+            # If the current mid can be used as the max size for each store
             if can_distribute(mid):
-                min_max_count = min(min_max_count, mid)
-                right = mid - 1  
+                minimized_maximum = min(minimized_maximum, mid)
+                right = mid - 1  # Try for a smaller maximum size
             else:
-                left = mid + 1      
+                left = mid + 1  # Increase mid to allow for larger store sizes
 
-        return min_max_count
+        return minimized_maximum
