@@ -1,8 +1,32 @@
-with ranked_employee as (
-    select id, month, salary, rank() over (partition by id order by month desc) as ranks from employee
+WITH EmployeeRanked AS (
+    -- Rank each employee's salary records by month within each employee, in descending order
+    SELECT 
+        id, 
+        month, 
+        salary, 
+        RANK() OVER (PARTITION BY id ORDER BY month DESC) AS month_rank
+    FROM employee
 ),
-last_month_dropped_employee as (
-    select id, month, salary from ranked_employee where ranks != 1
+EmployeeMonthlySalaries AS (
+    -- Filter out each employee's most recent month to only consider previous months
+    SELECT 
+        id, 
+        month, 
+        salary 
+    FROM EmployeeRanked 
+    WHERE month_rank != 1
 )
-select l1.id, l1.month, (l1.salary + ifnull(l2.salary, 0) + ifnull(l3.salary, 0)) as Salary from last_month_dropped_employee as l1 left join last_month_dropped_employee as l2 on l1.id = l2.id and l1.month = l2.month + 1 left join last_month_dropped_employee as l3 on l1.id = l3.id and l1.month = l3.month + 2 order by id asc, month desc
-
+-- Calculate cumulative salary by summing each month’s salary with the previous two months, if available
+SELECT 
+    curr_month.id, 
+    curr_month.month, 
+    (curr_month.salary + IFNULL(prev_month.salary, 0) + IFNULL(prev_two_months.salary, 0)) AS salary
+FROM 
+    EmployeeMonthlySalaries AS curr_month
+LEFT JOIN 
+    EmployeeMonthlySalaries AS prev_month ON curr_month.id = prev_month.id AND curr_month.month = prev_month.month + 1
+LEFT JOIN 
+    EmployeeMonthlySalaries AS prev_two_months ON curr_month.id = prev_two_months.id AND curr_month.month = prev_two_months.month + 2
+ORDER BY 
+    curr_month.id ASC, 
+    curr_month.month DESC;
