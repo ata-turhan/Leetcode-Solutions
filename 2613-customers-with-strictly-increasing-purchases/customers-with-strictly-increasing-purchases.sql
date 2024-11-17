@@ -1,4 +1,17 @@
-WITH customer_first_last_year AS (
+WITH RECURSIVE min_max_year AS (
+    SELECT 
+        MIN(YEAR(order_date)) AS min_year, 
+        MAX(YEAR(order_date)) AS max_year
+    FROM Orders
+),
+years AS (
+    SELECT (SELECT min_year FROM min_max_year) AS year
+    UNION ALL
+    SELECT year + 1
+    FROM years
+    WHERE year + 1 <= (SELECT max_year FROM min_max_year)
+),
+customer_first_last_year AS (
     SELECT 
         customer_id, 
         MIN(YEAR(order_date)) AS first_year, 
@@ -6,19 +19,12 @@ WITH customer_first_last_year AS (
     FROM Orders
     GROUP BY customer_id
 ),
-numbers AS (
-    SELECT 0 AS n UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 
-    UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9
-    UNION ALL SELECT 10 UNION ALL SELECT 11 UNION ALL SELECT 12 UNION ALL SELECT 13 UNION ALL SELECT 14
-    UNION ALL SELECT 15 UNION ALL SELECT 16 UNION ALL SELECT 17 UNION ALL SELECT 18 UNION ALL SELECT 19
-    UNION ALL SELECT 20  -- Extend this list if the range of years is larger
-),
 customer_years AS (
     SELECT 
         c.customer_id, 
-        c.first_year + n.n AS year
+        y.year
     FROM customer_first_last_year c
-    JOIN numbers n ON n.n <= c.last_year - c.first_year
+    JOIN years y ON y.year BETWEEN c.first_year AND c.last_year
 ),
 customer_year_purchases AS (
     SELECT 
