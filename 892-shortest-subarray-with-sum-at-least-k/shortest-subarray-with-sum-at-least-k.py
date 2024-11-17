@@ -1,18 +1,24 @@
+from typing import List
+from heapq import heappush, heappop
+
 class Solution:
     def shortestSubarray(self, nums: List[int], k: int) -> int:
-        shortest_sub_length = len(nums) + 1
-        cum_sum = 0
-        prev_sums = []
-        heappush(prev_sums, (0, -1))
+        # Initialize shortest length with a value greater than possible
+        shortest_length = len(nums) + 1
+        cumulative_sum = 0
+        previous_sums = []  # Min-heap to store cumulative sums with their indices
+        heappush(previous_sums, (0, -1))  # Base case: cumulative sum before the array starts
 
-        for i in range(len(nums)):
-            cum_sum += nums[i]
+        for current_index in range(len(nums)):
+            cumulative_sum += nums[current_index]
 
-            while prev_sums and cum_sum - prev_sums[0][0] >= k:
-                _, prev_idx = heappop(prev_sums)
-                shortest_sub_length = min(shortest_sub_length, i - prev_idx)
+            # Check if any previous cumulative sum satisfies the condition for a valid subarray
+            while previous_sums and cumulative_sum - previous_sums[0][0] >= k:
+                _, prev_index = heappop(previous_sums)
+                shortest_length = min(shortest_length, current_index - prev_index)
 
-            heappush(prev_sums, (cum_sum, i))
+            # Push the current cumulative sum with its index into the heap
+            heappush(previous_sums, (cumulative_sum, current_index))
 
-        return shortest_sub_length if shortest_sub_length < len(nums) + 1 else -1
-        
+        # Return the shortest valid subarray length or -1 if no valid subarray exists
+        return shortest_length if shortest_length <= len(nums) else -1
