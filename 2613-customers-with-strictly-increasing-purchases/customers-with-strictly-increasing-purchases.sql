@@ -1,17 +1,20 @@
-WITH RECURSIVE min_max_year AS (
+WITH RECURSIVE YearRange AS (
+    -- Generate a range of years spanning the min and max order dates
     SELECT 
         MIN(YEAR(order_date)) AS min_year, 
         MAX(YEAR(order_date)) AS max_year
     FROM Orders
 ),
-years AS (
-    SELECT (SELECT min_year FROM min_max_year) AS year
+Years AS (
+    -- Create a sequential year list using recursion
+    SELECT (SELECT min_year FROM YearRange) AS year
     UNION ALL
     SELECT year + 1
-    FROM years
-    WHERE year + 1 <= (SELECT max_year FROM min_max_year)
+    FROM Years
+    WHERE year + 1 <= (SELECT max_year FROM YearRange)
 ),
-customer_first_last_year AS (
+CustomerFirstLastYear AS (
+    -- Determine the first and last active years for each customer
     SELECT 
         customer_id, 
         MIN(YEAR(order_date)) AS first_year, 
@@ -19,35 +22,42 @@ customer_first_last_year AS (
     FROM Orders
     GROUP BY customer_id
 ),
-customer_years AS (
+CustomerYears AS (
+    -- Assign all relevant years to each customer between their first and last order years
     SELECT 
         c.customer_id, 
         y.year
-    FROM customer_first_last_year c
-    JOIN years y ON y.year BETWEEN c.first_year AND c.last_year
+    FROM CustomerFirstLastYear c
+    JOIN Years y ON y.year BETWEEN c.first_year AND c.last_year
 ),
-customer_year_purchases AS (
+CustomerYearPurchases AS (
+    -- Calculate total purchases for each customer by year, filling gaps with 0
     SELECT 
         cy.customer_id, 
         cy.year,
         COALESCE(SUM(o.price), 0) AS total_purchase
-    FROM customer_years cy
-    LEFT JOIN Orders o ON cy.customer_id = o.customer_id AND YEAR(o.order_date) = cy.year
+    FROM CustomerYears cy
+    LEFT JOIN Orders o 
+        ON cy.customer_id = o.customer_id 
+        AND YEAR(o.order_date) = cy.year
     GROUP BY cy.customer_id, cy.year
 ),
-customer_purchases_lag AS (
+CustomerPurchasesWithLag AS (
+    -- Add the previous year's total purchase as a lag column
     SELECT 
         cp.customer_id, 
         cp.year, 
         cp.total_purchase,
         LAG(cp.total_purchase) OVER (PARTITION BY cp.customer_id ORDER BY cp.year) AS prev_total_purchase
-    FROM customer_year_purchases cp
+    FROM CustomerYearPurchases cp
 ),
-customers_with_non_increasing_purchases AS (
+CustomersWithNonIncreasingPurchases AS (
+    -- Identify customers where the yearly purchase is not strictly increasing
     SELECT DISTINCT customer_id
-    FROM customer_purchases_lag
+    FROM CustomerPurchasesWithLag
     WHERE prev_total_purchase IS NOT NULL AND total_purchase <= prev_total_purchase
 )
+-- Select customers whose purchases are strictly increasing
 SELECT customer_id
-FROM customer_first_last_year
-WHERE customer_id NOT IN (SELECT customer_id FROM customers_with_non_increasing_purchases);
+FROM CustomerFirstLastYear
+WHERE customer_id NOT IN (SELECT customer_id FROM CustomersWithNonIncreasingPurchases);
