@@ -12,7 +12,7 @@ SELECT
     COUNT(af.friend_id) AS friends_likes -- Number of friends who liked the page
 FROM 
     all_friends AS af
-LEFT JOIN 
+JOIN 
     likes AS l1 ON af.friend_id = l1.user_id -- Join friends with their liked pages
 LEFT JOIN 
     likes AS l2 ON af.user_id = l2.user_id AND l1.page_id = l2.page_id 
