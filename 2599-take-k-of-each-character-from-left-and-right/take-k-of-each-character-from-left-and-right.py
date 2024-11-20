@@ -1,33 +1,45 @@
+from collections import Counter, defaultdict
+
 class Solution:
     def takeCharacters(self, s: str, k: int) -> int:
+        # Edge case: If k is 0, no characters need to be taken
         if k == 0:
             return 0
-        counter = Counter(s)
-        if counter["a"] < k or counter["b"] < k or counter["c"] < k:
+
+        # Count the occurrences of each character in the string
+        char_count = Counter(s)
+
+        # If any character appears less than k times, it's impossible to satisfy the condition
+        if char_count["a"] < k or char_count["b"] < k or char_count["c"] < k:
             return -1
-        
-        right = len(s)
-        window = defaultdict(int)
-        required_count = 0
-        while required_count < 3:
-            right -= 1
-            window[s[right]] += 1
-            if window[s[right]] == k:
-                required_count += 1
 
-        min_char = len(s) - right          
+        # Initialize pointers and the sliding window
+        right_pointer = len(s)
+        window_count = defaultdict(int)
+        required_count_met = 0
 
-        for left in range(len(s)):
-            window[s[left]] += 1
+        # Expand the window from the right to meet the required count for all characters
+        while required_count_met < 3:
+            right_pointer -= 1
+            window_count[s[right_pointer]] += 1
+            if window_count[s[right_pointer]] == k:
+                required_count_met += 1
 
-            while right < len(s) and window[s[right]] != k:       
-                window[s[right]] -= 1
-                right += 1
+        # Calculate the minimum characters needed to satisfy the condition
+        min_characters = len(s) - right_pointer
 
-            if left < right:
-                min_char = min(min_char, left + 1 + len(s) - right)
+        # Slide the left pointer through the string
+        for left_pointer in range(len(s)):
+            # Expand the window by including the character at the left pointer
+            window_count[s[left_pointer]] += 1
 
-        return min_char
-            
+            # Contract the window from the right to maintain valid counts
+            while right_pointer < len(s) and window_count[s[right_pointer]] != k:
+                window_count[s[right_pointer]] -= 1
+                right_pointer += 1
 
-        
+            # Update the minimum characters if a valid window is found
+            if left_pointer < right_pointer:
+                min_characters = min(min_characters, left_pointer + 1 + len(s) - right_pointer)
+
+        return min_characters
