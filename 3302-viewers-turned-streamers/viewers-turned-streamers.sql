@@ -25,7 +25,7 @@ USING
 GROUP BY 
     s.user_id
 HAVING 
-    sessions_count  > 0
+    sessions_count > 0
 ORDER BY 
     sessions_count  DESC, 
     s.user_id DESC;
