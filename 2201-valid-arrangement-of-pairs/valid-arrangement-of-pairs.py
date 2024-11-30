@@ -1,33 +1,37 @@
 from collections import defaultdict
+from typing import List
 
 class Solution:
-    def validArrangement(self, pairs: List[List[int]]) -> List[List[int]]:        
+    def validArrangement(self, pairs: List[List[int]]) -> List[List[int]]:
         graph = defaultdict(list)
         in_degree = defaultdict(int)
         out_degree = defaultdict(int)
         
-        # Build graph and degree counts
-        for pair in pairs:
-            u, v = pair
-            graph[u].append((v, pair))
+        # Step 1: Build the graph and calculate in-degree and out-degree
+        for u, v in pairs:
+            graph[u].append((v, [u, v]))
             out_degree[u] += 1
             in_degree[v] += 1
         
-        # Find the starting node for Eulerian path
-        start = None
+        # Step 2: Identify the starting node for the Eulerian path
+        start_node = None
         for node in graph:
             if out_degree[node] - in_degree[node] == 1:
-                start = node
+                start_node = node
                 break
-        if start is None:
-            start = pairs[0][0]  # Start at any node if Eulerian circuit
+        if start_node is None:
+            start_node = pairs[0][0]  # If Eulerian circuit, start from any node
         
-        path = []
-        def dfs(u):
-            while graph[u]:
-                v, pair = graph[u].pop()
-                dfs(v)
-                path.append(pair)
+        # Step 3: Perform Hierholzer's algorithm to find the Eulerian path
+        eulerian_path = []
         
-        dfs(start)
-        return path[::-1]
+        def dfs(node):
+            while graph[node]:
+                next_node, edge = graph[node].pop()
+                dfs(next_node)
+                eulerian_path.append(edge)
+        
+        dfs(start_node)
+        
+        # Step 4: Reverse the path to get the correct order and return
+        return eulerian_path[::-1]
