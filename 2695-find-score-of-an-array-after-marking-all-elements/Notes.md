@@ -1,0 +1,1 @@
+<h2>find-score-of-an-array-after-marking-all-elements Notes</h2><hr>[ Time taken: 4 m 54 s ]
