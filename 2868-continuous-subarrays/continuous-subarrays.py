@@ -28,7 +28,7 @@ class Solution:
             min_indices.append(right_pointer)
 
             # Adjust the left pointer if the subarray condition is violated
-            while left_pointer <= right_pointer and nums[max_indices[0]] - nums[min_indices[0]] > 2:
+            while nums[max_indices[0]] - nums[min_indices[0]] > 2:
                 if max_indices[0] == left_pointer:
                     max_indices.popleft()
                 if min_indices[0] == left_pointer:
