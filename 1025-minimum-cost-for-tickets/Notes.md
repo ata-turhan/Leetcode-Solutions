@@ -1,1 +1,1 @@
-<h2>minimum-cost-for-tickets Notes</h2><hr>[ Time taken: 12 m 28 s ]
+<h2>minimum-cost-for-tickets Notes</h2><hr>[ Time taken: 7 m 19 s ]
