@@ -10,7 +10,6 @@ class Solution:
 
         for i in range(len(words)):
             for j in range(i + 1, len(words)):
-                word_length = len(words[i])
                 # Check if words[i] is both a prefix and a suffix of words[j]
                 if words[j].startswith(words[i]) and words[j].endswith(words[i]):
                     pair_count += 1
