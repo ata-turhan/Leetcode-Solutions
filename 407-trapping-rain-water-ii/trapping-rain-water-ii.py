@@ -2,8 +2,8 @@ import heapq
 
 class Solution:
     def trapRainWater(self, heightMap: List[List[int]]) -> int:
-        # Edge case: if the matrix has fewer than 2 rows or 2 columns, no water can be trapped
-        if not heightMap or not heightMap[0]:
+        # Edge case: if the matrix has fewer than 3 rows or 3 columns, no water can be trapped
+        if len(heightMap) < 3 or len(heightMap[0]) < 3:
             return 0
 
         m, n = len(heightMap), len(heightMap[0])
@@ -20,7 +20,7 @@ class Solution:
         # Variable to accumulate total trapped water
         water_trapped = 0
 
-        # Directions for exploring neighbors (up, down, left, right)
+        # Directions for exploring neighbors (down, up, right, left)
         directions = [(1,0), (-1,0), (0,1), (0,-1)]
 
         # 2. Process cells in the priority queue
