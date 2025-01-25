@@ -1,4 +1,5 @@
 from typing import List
+from collections import defaultdict
 
 class DSU:
     def __init__(self, n: int):
@@ -38,7 +39,6 @@ class Solution:
                 dsu.union(paired[i][1], paired[i-1][1])
 
         # Step 3: Group indices by their DSU root to form connected components
-        from collections import defaultdict
         components = defaultdict(list)
         for i in range(n):
             root = dsu.find(i)
