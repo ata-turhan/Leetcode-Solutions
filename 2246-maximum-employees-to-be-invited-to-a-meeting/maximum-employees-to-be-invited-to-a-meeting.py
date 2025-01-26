@@ -1,9 +1,10 @@
+import sys
+from functools import lru_cache
+
+sys.setrecursionlimit(10**7)
+
 class Solution:
-    def maximumInvitations(self, favorite: list[int]) -> int:
-        import sys
-        sys.setrecursionlimit(10**7)
-        from functools import lru_cache
-        
+    def maximumInvitations(self, favorite: list[int]) -> int:  
         n = len(favorite)
         
         # Build reverse edges for chain calculation
