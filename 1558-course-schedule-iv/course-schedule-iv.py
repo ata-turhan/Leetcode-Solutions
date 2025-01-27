@@ -7,7 +7,7 @@ class Solution:
         course_graph = [set() for _ in range(numCourses)]
         
         # Populate the graph with the given prerequisites
-        for course, prereq in prerequisites:
+        for prereq, course in prerequisites:
             course_graph[course].add(prereq)
 
         def bfs(start: int, target: int) -> bool:
@@ -28,7 +28,7 @@ class Solution:
 
         result = []
         # Process each query to determine if one course is a prerequisite for another
-        for start_course, target_course in queries:
+        for target_course, start_course in queries:
             result.append(bfs(start_course, target_course))  # Append the result of BFS for each query
 
         return result  # Return the list of results for all queries
