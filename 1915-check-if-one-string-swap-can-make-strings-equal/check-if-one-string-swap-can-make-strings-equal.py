@@ -18,7 +18,7 @@ class Solution:
         if not mismatch_indices:
             return True
 
-        # If more than 2 mismatches, one swap cannot fix it
+        # If there is no 2 mismatches, one swap cannot fix it
         if len(mismatch_indices) != 2:
             return False
 
