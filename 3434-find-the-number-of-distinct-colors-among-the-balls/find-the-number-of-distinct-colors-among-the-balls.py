@@ -1,26 +1,40 @@
+from collections import defaultdict
+from typing import List
+
 class Solution:
     def queryResults(self, limit: int, queries: List[List[int]]) -> List[int]:
-        balls = defaultdict(lambda:-1)
-        colors_count = defaultdict(int)
-        res = []
-        distinct_colors = 0
+        """
+        Processes a sequence of queries where each query assigns a color to a specific ball.
+        Tracks the number of distinct colors present in the system after each query.
 
-        for query in queries:
-            ball_idx, color = query
-            if balls[ball_idx] != -1:
-                colors_count[balls[ball_idx]] -= 1
-                if colors_count[balls[ball_idx]] == 0:
-                    distinct_colors -= 1
+        :param limit: Upper bound on the number of balls.
+        :param queries: List of queries where each query contains [ball_index, color].
+        :return: List of integers representing the number of distinct colors after each query.
+        """
+        ball_to_color = defaultdict(lambda: -1)  # Maps each ball to its assigned color
+        color_frequency = defaultdict(int)  # Tracks the count of each color
+        result = []
+        distinct_color_count = 0  # Number of distinct colors present
+
+        for ball_index, color in queries:
+            # If the ball already has a color, decrement the frequency of the previous color
+            if ball_to_color[ball_index] != -1:
+                previous_color = ball_to_color[ball_index]
+                color_frequency[previous_color] -= 1
+
+                # If the previous color is no longer used, decrement distinct color count
+                if color_frequency[previous_color] == 0:
+                    distinct_color_count -= 1
             
-            balls[ball_idx] = color
-            colors_count[color] += 1
+            # Assign the new color to the ball
+            ball_to_color[ball_index] = color
+            color_frequency[color] += 1
 
-            if colors_count[color] == 1:
-                distinct_colors += 1
+            # If this color is assigned for the first time, increment distinct color count
+            if color_frequency[color] == 1:
+                distinct_color_count += 1
 
-            res.append(distinct_colors)
+            # Append the current count of distinct colors
+            result.append(distinct_color_count)
 
-        return res
-
-
-        
+        return result
