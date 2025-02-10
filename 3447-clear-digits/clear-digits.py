@@ -1,12 +1,18 @@
 class Solution:
     def clearDigits(self, s: str) -> str:
-        stack = []
+        """
+        Removes the character preceding any digit in the given string.
         
-        for char in s:
-            if char in "0123456789":
-                if stack:
-                    stack.pop()
-            else:
-                stack.append(char)
+        :param s: Input string containing letters and digits.
+        :return: Modified string after removing characters preceding digits.
+        """
+        result_stack = []  # Stack to store non-digit characters
 
-        return "".join(stack)        
+        for char in s:
+            if char.isdigit():
+                if result_stack:
+                    result_stack.pop()  # Remove the last character before the digit
+            else:
+                result_stack.append(char)  # Add non-digit characters to the stack
+
+        return "".join(result_stack)  # Convert stack back to string
