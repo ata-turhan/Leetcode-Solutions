@@ -13,7 +13,7 @@ class Solution:
             result_stack.append(char)  # Add current character to stack
 
             # Check if the last characters in the stack form the 'part' substring
-            if "".join(result_stack[-len(part):]) == part:
+            if len(result_stack) >= len(part) and "".join(result_stack[-len(part):]) == part:
                 for _ in range(len(part)):  
                     result_stack.pop()  # Remove the matched substring
 
