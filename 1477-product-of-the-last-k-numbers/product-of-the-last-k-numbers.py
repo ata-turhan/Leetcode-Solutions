@@ -1,34 +1,41 @@
 class ProductOfNumbers:
 
     def __init__(self):
-        self.stream = []
-        self.max_zero_index = -1
-        self.prefix = []
-        
+        """
+        Initializes the data structure to store the sequence of numbers 
+        and their prefix product values.
+        """
+        self.numbers = []  # Stores the sequence of numbers
+        self.last_zero_index = -1  # Tracks the last occurrence of zero
+        self.prefix_products = []  # Stores prefix product values
 
     def add(self, num: int) -> None:
-        self.stream.append(num)
-        if num == 0:
-            self.max_zero_index = len(self.stream) - 1
-            self.prefix.append(1)
-        else:
-            if self.prefix:
-                self.prefix.append(self.prefix[-1] * num)
-            else:
-                self.prefix.append(num)
+        """
+        Adds a number to the sequence and updates the prefix product list.
+        If the number is zero, reset the prefix product calculations.
+        """
+        self.numbers.append(num)
 
-        
+        if num == 0:
+            self.last_zero_index = len(self.numbers) - 1  # Mark the index of the last zero
+            self.prefix_products.append(1)  # Reset prefix product after zero
+        else:
+            if self.prefix_products:
+                self.prefix_products.append(self.prefix_products[-1] * num)
+            else:
+                self.prefix_products.append(num)
 
     def getProduct(self, k: int) -> int:
-        start_idx = len(self.stream) - k
-        if start_idx <= self.max_zero_index:
+        """
+        Returns the product of the last k numbers in the sequence.
+        If there is a zero in the range, the product is 0.
+        """
+        start_index = len(self.numbers) - k
+
+        if start_index <= self.last_zero_index:
             return 0
-        else:
-            if start_idx == 0:
-                return self.prefix[-1]
-            else:
-                return int(self.prefix[-1] / self.prefix[start_idx - 1])
-        
+        return self.prefix_products[-1] if start_index == 0 else self.prefix_products[-1] // self.prefix_products[start_index - 1]
+
 
 
 # Your ProductOfNumbers object will be instantiated and called as such:
