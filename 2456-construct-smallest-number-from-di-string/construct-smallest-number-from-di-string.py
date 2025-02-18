@@ -1,25 +1,38 @@
 class Solution:
     def smallestNumber(self, pattern: str) -> str:
-        def dfs(i, num):
-            if i == (len(pattern) + 1):
-                return num
+        """
+        Generates the lexicographically smallest number that follows 
+        the given pattern of 'I' (increasing) and 'D' (decreasing).
+        """
 
-            for j in range(1, 10):
-                if pattern[i - 1] == "I":
-                    if j > int(num[-1]) and str(j) not in num:
-                        res = dfs(i + 1, num + str(j))
-                        if res:
-                            return res
-                else:
-                    if j < int(num[-1]) and str(j) not in num:
-                        res = dfs(i + 1, num + str(j))
-                        if res:
-                            return res
-                        
+        def backtrack(index: int, current_num: str) -> str:
+            """
+            Backtracking function to construct the smallest valid number.
+            - `index`: Current position in the pattern.
+            - `current_num`: The number sequence formed so far.
+            """
 
-        for i in range(1, 10):
-            res = dfs(1, str(i))
-            if res:
-                return res
+            # Base case: If all digits are placed, return the number
+            if index == len(pattern) + 1:
+                return current_num
 
-        
+            for digit in range(1, 10):
+                last_digit = int(current_num[-1])
+
+                # 'I' condition: next digit must be greater
+                if pattern[index - 1] == "I" and digit > last_digit and str(digit) not in current_num:
+                    result = backtrack(index + 1, current_num + str(digit))
+                    if result:
+                        return result
+
+                # 'D' condition: next digit must be smaller
+                elif pattern[index - 1] == "D" and digit < last_digit and str(digit) not in current_num:
+                    result = backtrack(index + 1, current_num + str(digit))
+                    if result:
+                        return result
+
+        # Try all digits (1-9) as starting points
+        for start_digit in range(1, 10):
+            result = backtrack(1, str(start_digit))
+            if result:
+                return result
