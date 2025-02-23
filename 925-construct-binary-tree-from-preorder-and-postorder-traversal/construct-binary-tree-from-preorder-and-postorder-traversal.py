@@ -21,7 +21,7 @@ class Solution:
                 return node  # Base case for single node
             
             left_val = preorder[pre_idx + 1]
-            left_post_idx = postorder.index(left_val)  # Find left subtree size
+            left_post_idx = postorder.index(left_val) 
             
             # Construct left and right subtrees
             node.left = create_tree(pre_idx + 1, post_start, left_post_idx)
