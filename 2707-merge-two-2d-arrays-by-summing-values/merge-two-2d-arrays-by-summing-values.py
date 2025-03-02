@@ -1,16 +1,15 @@
+from typing import List
+from collections import defaultdict
+
 class Solution:
     def mergeArrays(self, nums1: List[List[int]], nums2: List[List[int]]) -> List[List[int]]:
+        """Merges two sorted arrays by summing values with the same ID and returning a sorted result."""
         id_to_values = defaultdict(int)
 
-        for id_, val in nums1:
-            id_to_values[id_] += val
+        # Merge both lists into the dictionary
+        for nums in (nums1, nums2):
+            for id_, val in nums:
+                id_to_values[id_] += val
 
-        for id_, val in nums2:
-            id_to_values[id_] += val
-
-        res = []
-
-        for key in sorted(id_to_values.keys()):
-            res.append([key, id_to_values[key]])
-
-        return res
+        # Return sorted merged list
+        return [[key, id_to_values[key]] for key in sorted(id_to_values)]
