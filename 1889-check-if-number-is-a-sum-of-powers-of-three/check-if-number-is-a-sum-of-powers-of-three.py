@@ -1,28 +1,28 @@
 from math import log
+from functools import lru_cache
 
 class Solution:
-    def checkPowersOfThree(self, n: int) -> bool:
-
-        @cache
-        def is_sum(num):
-            if num == 0:
+    def checkPowersOfThree(self, target: int) -> bool:
+        """Checks if target can be represented as the sum of distinct powers of three."""
+        
+        @lru_cache(None)
+        def can_form_sum(remaining: int) -> bool:
+            """Recursively checks if the remaining value can be expressed as a sum of distinct powers of three."""
+            if remaining == 0:
                 return True
-            elif num < 0:
+            if remaining < 0:
                 return False
 
-            base = int(log(n, 3))
-            for i in range(base, -1, -1):
-                if i in used_powers:
+            max_power = int(log(remaining, 3))  # Find the highest power of 3 within range
+            for exponent in range(max_power, -1, -1):
+                if exponent in used_exponents:
                     continue
-                used_powers.add(i)
-                if is_sum(num - 3 ** i):
+                used_exponents.add(exponent)
+                if can_form_sum(remaining - 3 ** exponent):
                     return True
-                used_powers.remove(i)
+                used_exponents.remove(exponent)
 
             return False
 
-        used_powers = set()
-
-        return is_sum(n)
-
-        
+        used_exponents = set()
+        return can_form_sum(target)
