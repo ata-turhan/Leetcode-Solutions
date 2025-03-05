@@ -1,9 +1,4 @@
 class Solution:
-    def coloredCells(self, n: int) -> int:
-        result = 1
-
-        for i in range(1, n):
-            result += i * 4
-
-        return result
-        
+    def coloredCells(self, layers: int) -> int:
+        """Computes the total number of colored cells in an expanding pattern."""
+        return layers**2 + (layers - 1)**2
