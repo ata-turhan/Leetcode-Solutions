@@ -1,17 +1,23 @@
+from typing import List
+
 class Solution:
     def findMissingAndRepeatedValues(self, grid: List[List[int]]) -> List[int]:
-        a_b = [-1, -1]
+        """Finds the repeated and missing numbers in the grid."""
         n = len(grid)
-        possible_nums = set(range(1, n**2 + 1))
+        num_count = {}
+        repeated, missing = -1, -1
 
+        # Count occurrences of each number
         for row in grid:
             for num in row:
-                if num not in possible_nums:
-                    a_b[0] = num
-                else:
-                    possible_nums.remove(num)
+                num_count[num] = num_count.get(num, 0) + 1
+                if num_count[num] == 2:
+                    repeated = num
 
-        b = possible_nums.pop()
-        a_b[1] = b
-        return a_b
-        
+        # Find the missing number
+        for num in range(1, n**2 + 1):
+            if num not in num_count:
+                missing = num
+                break
+
+        return [repeated, missing]
