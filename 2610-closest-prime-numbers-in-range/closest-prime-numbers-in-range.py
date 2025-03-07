@@ -1,48 +1,27 @@
+from typing import List
+
 class Solution:
     def closestPrimes(self, left: int, right: int) -> List[int]:
-        prime = [True] * (1 + right)
-        prime[1] = False
-        for i in range(2, right + 1):
-            if prime[i] == True:
-                for j in range(i * i, right + 1, i):
-                    prime[j] = False
-
+        """Finds the pair of closest prime numbers in the given range [left, right]."""
         
-        num1, num2 = -1, -1
-
-        for i in range(left, right + 1):
-            if prime[i] == True:
-                num1 = i   
-                break     
-
-        if num1 == -1:
-            return [-1, -1]
-
-        for i in range(num1 + 1, right+1):
-            if prime[i] == True:
-                num2 = i
-                break
-
-        if num2 == -1:
-            return [-1, -1]
-
-        min_diff = num2 - num1
-        res = [num1, num2]
-
-        prime_second = num2
-        for i in range(prime_second + 1, right+1):
-            if prime[i] == True:
-                num1 = num2
-                num2 = i
-                if  (num2 - num1) < min_diff:
-                    min_diff = num2 - num1
-                    res = [num1, num2]
-
-        print(min_diff)
-
-        return res
-
-
-
-
+        # Step 1: Use Sieve of Eratosthenes to mark prime numbers
+        is_prime = [True] * (right + 1)
+        is_prime[0] = is_prime[1] = False  # 0 and 1 are not prime
         
+        for num in range(2, int(right ** 0.5) + 1):
+            if is_prime[num]:
+                for multiple in range(num * num, right + 1, num):
+                    is_prime[multiple] = False
+        
+        # Step 2: Find the closest prime pair
+        previous_prime, closest_pair = -1, [-1, -1]
+        min_difference = float('inf')
+        
+        for current in range(left, right + 1):
+            if is_prime[current]:
+                if previous_prime != -1 and (current - previous_prime) < min_difference:
+                    min_difference = current - previous_prime
+                    closest_pair = [previous_prime, current]
+                previous_prime = current  # Update the last seen prime
+        
+        return closest_pair
