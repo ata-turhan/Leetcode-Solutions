@@ -1,16 +1,21 @@
 class Solution:
     def minimumRecolors(self, blocks: str, k: int) -> int:
-        min_recolor = k
-
-        white_count = blocks[:k].count("W")
-        min_recolor = min(min_recolor, white_count)
+        """Finds the minimum number of recolors needed to get k consecutive 'B' blocks."""
         
-        for i in range(k, len(blocks)):
-            if blocks[i - k] == "W":
+        # Initialize the minimum recolors needed to k (worst case scenario)
+        min_recolors = k
+        
+        # Count initial 'W' in the first window of size k
+        white_count = blocks[:k].count("W")
+        min_recolors = min(min_recolors, white_count)
+        
+        # Sliding window approach to update the count dynamically
+        for right in range(k, len(blocks)):
+            if blocks[right - k] == "W":  # Remove outgoing element
                 white_count -= 1
-            if blocks[i] == "W":
+            if blocks[right] == "W":  # Add incoming element
                 white_count += 1
+            
+            min_recolors = min(min_recolors, white_count)
 
-            min_recolor = min(min_recolor, white_count)
-
-        return min_recolor        
+        return min_recolors
