@@ -1,49 +1,32 @@
+from typing import List
+
 class Solution:
     def maximumCount(self, nums: List[int]) -> int:
-        neg_idx = -1
-
-        left, right = 0, len(nums) - 1
-
-        while left <= right:
-            mid = left + (right - left) // 2
-            if nums[mid] < 0:
-                if mid == len(nums) - 1:
-                    neg_idx = len(nums)
-                    break
-                else:
+        """Finds the maximum count of either negative or positive numbers using binary search."""
+        
+        def find_first_non_negative() -> int:
+            """Finds the index of the first non-negative number using binary search."""
+            left, right = 0, len(nums) - 1
+            while left <= right:
+                mid = left + (right - left) // 2
+                if nums[mid] < 0:
                     left = mid + 1
-            else:
-                if nums[mid] >= 0:
-                    if mid == 0:
-                        neg_idx = 0
-                        break
-                    else:
-                        right = mid - 1
-                        neg_idx = mid
-
-        pos_idx = -1
-
-        left, right = 0, len(nums) - 1
-
-        while left <= right:
-            mid = left + (right - left) // 2
-            if nums[mid] <= 0:
-                if mid == len(nums) - 1:
-                    pos_idx = len(nums)
-                    break
                 else:
+                    right = mid - 1
+            return left  # First non-negative index
+
+        def find_first_positive() -> int:
+            """Finds the index of the first positive number using binary search."""
+            left, right = 0, len(nums) - 1
+            while left <= right:
+                mid = left + (right - left) // 2
+                if nums[mid] <= 0:
                     left = mid + 1
-            else:
-                if nums[mid] > 0:
-                    if mid == 0:
-                        pos_idx = 0
-                        break
-                    else:
-                        right = mid - 1
-                        pos_idx = mid
+                else:
+                    right = mid - 1
+            return left  # First positive index
 
-        neg_count = neg_idx
-        pos_count = len(nums) - pos_idx
+        negative_count = find_first_non_negative()
+        positive_count = len(nums) - find_first_positive()
 
-
-        return max(neg_count, pos_count)
+        return max(negative_count, positive_count)
