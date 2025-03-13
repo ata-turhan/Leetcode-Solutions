@@ -12,7 +12,7 @@ class Solution:
         # Helper function: returns True if the first k queries can reduce nums to a Zero Array.
         def can_zero(k: int) -> bool:
             # Create a difference array of length n+1 (to easily handle range updates)
-            diff = [0] * (n + 1)
+            diff = [0] * (n)
             for i in range(k):
                 l, r, val = queries[i]
                 diff[l] += val
