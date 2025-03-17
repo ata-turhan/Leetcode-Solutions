@@ -1,10 +1,10 @@
+from typing import List
+from collections import Counter
+
 class Solution:
     def divideArray(self, nums: List[int]) -> bool:
-        counter = Counter(nums)
+        """Checks if the array can be divided into pairs with equal elements."""
+        
+        frequency_map = Counter(nums)
 
-        for count in counter.values():
-            if count % 2 == 1:
-                return False
-        
-        return True
-        
+        return all(count % 2 == 0 for count in frequency_map.values())
