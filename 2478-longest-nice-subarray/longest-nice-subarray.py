@@ -11,7 +11,7 @@ class Solution:
                 bitwise_and ^= nums[left]
                 left += 1
 
-            bitwise_and |= nums[right]
+            bitwise_and ^= nums[right]
             max_len = max(max_len, right - left + 1)
 
         return max_len
