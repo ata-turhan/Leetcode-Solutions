@@ -41,7 +41,7 @@
 <p><strong>Constraints:</strong></p>
 
 <ul>
-	<li><code>1 &lt;= n &lt;= 10<sup>5</sup></code></li>
+	<li><code>2 &lt;= n &lt;= 10<sup>5</sup></code></li>
 	<li><code>0 &lt;= edges.length &lt;= 10<sup>5</sup></code></li>
 	<li><code>edges[i].length == 3</code></li>
 	<li><code>0 &lt;= u<sub>i</sub>, v<sub>i</sub> &lt;= n - 1</code></li>
@@ -50,4 +50,5 @@
 	<li><code>1 &lt;= query.length &lt;= 10<sup>5</sup></code></li>
 	<li><code>query[i].length == 2</code></li>
 	<li><code>0 &lt;= s<sub>i</sub>, t<sub>i</sub> &lt;= n - 1</code></li>
+	<li><code>s<sub>i</sub> !=&nbsp;t<sub>i</sub></code></li>
 </ul>
