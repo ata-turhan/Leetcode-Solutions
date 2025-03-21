@@ -1,15 +1,26 @@
+from typing import List
+
 class Solution:
-    def findAllRecipes(self, recipes: List[str], ingredients: List[List[str]], supplies: List[str]) -> List[str]:
-        n = len(recipes)
-        supplies_set = set(supplies)
-        res = set()
+    def findAllRecipes(
+        self,
+        recipes: List[str],
+        ingredients: List[List[str]],
+        supplies: List[str]
+    ) -> List[str]:
+        """Finds all recipes that can be prepared using available supplies and other recipes."""
 
-        for _ in range(n):
-            for recipe, ingredient in zip(recipes, ingredients):
-                if all(i in supplies_set for i in ingredient):
-                    res.add(recipe)
-                    supplies_set.add(recipe)
+        available = set(supplies)
+        discovered_recipes = set()
+        total_recipes = len(recipes)
 
-        return list(res)
+        # Perform up to n passes to allow chained dependency resolution
+        for _ in range(total_recipes):
+            for recipe, required_ingredients in zip(recipes, ingredients):
+                if recipe in discovered_recipes:
+                    continue  # Already added
+                
+                if all(item in available for item in required_ingredients):
+                    discovered_recipes.add(recipe)
+                    available.add(recipe)
 
-        
+        return list(discovered_recipes)
