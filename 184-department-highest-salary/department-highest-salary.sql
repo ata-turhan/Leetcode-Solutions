@@ -1,8 +1,8 @@
 -- Select the department name, employee name, and salary for employees with the highest salary in each department
 SELECT
-    Department.name AS 'Department',  -- Get department name from the Department table
-    Employee.name AS 'Employee',      -- Get employee name from the Employee table
-    Employee.salary AS 'Salary'       -- Get the employee's salary from the Employee table
+    Department.name AS 'Department', 
+    Employee.name AS 'Employee',     
+    Employee.salary AS 'Salary'       
 FROM
     Employee
     JOIN Department ON Employee.DepartmentId = Department.Id  -- Join Employee and Department tables on the department ID
