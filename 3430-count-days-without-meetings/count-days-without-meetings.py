@@ -25,8 +25,3 @@ class Solution:
             count += interval[1] - interval[0] + 1
 
         return days - count  # Return the number of days not covered by any meetings
-
-# Example usage:
-# sol = Solution()
-# print(sol.countDays(10, [[1, 2], [2, 3], [5, 6]]))  # Output: 6
-# print(sol.countDays(10, [[1, 2], [3, 4], [5, 6]]))  # Output: 4
