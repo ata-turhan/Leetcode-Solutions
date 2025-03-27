@@ -4,8 +4,8 @@ WITH ranked_scores AS (
         subject, 
         score, 
         exam_date, 
-        ROW_NUMBER() OVER (PARTITION BY student_id, subject ORDER BY exam_date ASC) AS ascending,
-        ROW_NUMBER() OVER (PARTITION BY student_id, subject ORDER BY exam_date DESC) AS descending
+        ROW_NUMBER() OVER (PARTITION BY student_id, subject ORDER BY exam_date ASC) AS ascending_rank,
+        ROW_NUMBER() OVER (PARTITION BY student_id, subject ORDER BY exam_date DESC) AS descending_rank
     FROM scores
 )
 
@@ -19,6 +19,6 @@ JOIN ranked_scores AS r2
     ON r1.student_id = r2.student_id 
    AND r1.subject = r2.subject
 WHERE 
-    r1.ascending = 1 
-    AND r2.descending = 1 
+    r1.ascending_rank = 1 
+    AND r2.descending_rank = 1 
     AND r1.score < r2.score;
