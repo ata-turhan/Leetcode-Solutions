@@ -1,15 +1,29 @@
+from typing import List
+from collections import Counter
+
 class Solution:
     def minimumIndex(self, nums: List[int]) -> int:
-        counter = Counter(nums)
-        x = max(counter, key=lambda num: counter[num])
-        count_x = nums.count(x)
-        seen_count_x = 0
+        """Finds the minimum index to split the array such that the dominant element remains dominant in both parts."""
+        
+        frequency_map = Counter(nums)
+        dominant_element = max(frequency_map, key=frequency_map.get)
+        total_dominant_count = frequency_map[dominant_element]
 
-        for i, num in enumerate(nums[:-1]):
-            if num == x:
-                seen_count_x += 1
-            if seen_count_x > (i + 1) // 2 and (count_x - seen_count_x) > (len(nums) - i - 1) // 2:
+        left_dominant_count = 0
+        length = len(nums)
+
+        for i in range(length - 1):  # Can't split at last index
+            if nums[i] == dominant_element:
+                left_dominant_count += 1
+
+            left_length = i + 1
+            right_length = length - left_length
+            right_dominant_count = total_dominant_count - left_dominant_count
+
+            if (
+                left_dominant_count > left_length // 2 and
+                right_dominant_count > right_length // 2
+            ):
                 return i
 
         return -1
-        
