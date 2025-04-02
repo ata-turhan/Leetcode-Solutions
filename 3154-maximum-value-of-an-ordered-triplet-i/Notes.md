@@ -1,0 +1,1 @@
+<h2>maximum-value-of-an-ordered-triplet-i Notes</h2><hr>[ Time taken: 6 m 27 s ]
