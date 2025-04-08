@@ -1,26 +1,34 @@
+from typing import List
+
 class Solution:
-    def canPartition(self, arr: List[int]) -> bool:
-        def solve(ind,target):
-            if target==0:
+    def canPartition(self, nums: List[int]) -> bool:
+        """
+        Determines if the array can be partitioned into two subsets with equal sums.
+        Uses top-down DP with memoization.
+        """
+
+        total_sum = sum(nums)
+        if total_sum % 2 != 0:
+            return False  # Cannot partition an odd total sum
+
+        target = total_sum // 2
+        n = len(nums)
+        memo = [[-1 for _ in range(target + 1)] for _ in range(n)]
+
+        def can_partition(index: int, remaining: int) -> bool:
+            if remaining == 0:
                 return True
-            if ind==0:
-                return arr[ind]==target
-            if dp[ind][target]!=-1:
-                return dp[ind][target]
-            not_pick=solve(ind-1,target)
-            pick=False
-            if target>=arr[ind]:
-                pick=solve(ind-1,target-arr[ind])
-            dp[ind][target]=pick or not_pick
-            return dp[ind][target]
-        s=sum(arr)
-        if s%2!=0:
-            return False
-        s//=2
-        n=len(arr)
-        dp=[[-1 for j in range(s+1)] for i in range(n)]
-        return solve(n-1,s)
+            if index == 0:
+                return nums[0] == remaining
+            if memo[index][remaining] != -1:
+                return memo[index][remaining]
 
+            not_take = can_partition(index - 1, remaining)
+            take = False
+            if nums[index] <= remaining:
+                take = can_partition(index - 1, remaining - nums[index])
 
-            
-        
+            memo[index][remaining] = take or not_take
+            return memo[index][remaining]
+
+        return can_partition(n - 1, target)
