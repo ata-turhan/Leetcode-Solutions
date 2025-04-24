@@ -1,19 +1,25 @@
+from typing import List
+from collections import defaultdict
+
 class Solution:
     def countCompleteSubarrays(self, nums: List[int]) -> int:
-        l = 0
+        """
+        Counts the number of complete subarrays.
+        A subarray is complete if it contains all distinct elements in the original array.
+        """
+        total_distinct = len(set(nums))
+        left = 0
         subarray_count = 0
-        count_distincts = len(set(nums))
-        subarray_dict = defaultdict(int) 
+        frequency_map = defaultdict(int)
 
-        for r in range(len(nums)):
-            subarray_dict[nums[r]] += 1
+        for right in range(len(nums)):
+            frequency_map[nums[right]] += 1
 
-            while l <= r and len(subarray_dict) == count_distincts:
-                subarray_count += len(nums) - r
-                subarray_dict[nums[l]] -= 1
-                if subarray_dict[nums[l]] == 0:
-                    subarray_dict.pop(nums[l])
-                l += 1
+            while len(frequency_map) == total_distinct:
+                subarray_count += len(nums) - right
+                frequency_map[nums[left]] -= 1
+                if frequency_map[nums[left]] == 0:
+                    del frequency_map[nums[left]]
+                left += 1
 
         return subarray_count
-        
