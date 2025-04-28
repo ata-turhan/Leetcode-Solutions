@@ -1,18 +1,24 @@
+from typing import List
+
 class Solution:
     def countSubarrays(self, nums: List[int], k: int) -> int:
-        l = 0
+        """
+        Counts the number of subarrays where the sum of elements 
+        multiplied by the length of the subarray is less than k.
+        """
+        left = 0
         subarray_count = 0
-        cur_sum = 0
+        current_sum = 0
 
-        for r in range(len(nums)):
-            cur_sum += nums[r]
+        for right in range(len(nums)):
+            current_sum += nums[right]
 
-            while l <= r and cur_sum * (r - l + 1) >= k:
-                cur_sum -= nums[l]
-                l += 1
+            # Shrink the window if the current window is invalid
+            while left <= right and current_sum * (right - left + 1) >= k:
+                current_sum -= nums[left]
+                left += 1
 
-            if l <= r:
-                subarray_count += (r - l + 1)
+            # After shrinking, all subarrays ending at `right` and starting from [left, right] are valid
+            subarray_count += (right - left + 1)
 
         return subarray_count
-        
