@@ -1,9 +1,14 @@
+from typing import List
+
 class Solution:
     def buildArray(self, nums: List[int]) -> List[int]:
-        ans = [0] * len(nums)
+        """
+        Constructs a new array such that result[i] = nums[nums[i]] for each index i.
+        """
+        n = len(nums)
+        result = [0] * n
 
-        for i in range(len(nums)):
-            ans[i] = nums[nums[i]]
+        for i in range(n):
+            result[i] = nums[nums[i]]
 
-        return ans
-        
+        return result
