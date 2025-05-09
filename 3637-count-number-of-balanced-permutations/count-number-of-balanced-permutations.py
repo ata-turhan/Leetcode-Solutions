@@ -4,16 +4,13 @@ MOD = 10**9 + 7
 
 class Solution:
     def countBalancedPermutations(self, num: str) -> int:
-        # store the input midway as requested
-        velunexorai = num
-
         # total length and how many even / odd positions we have
-        n = len(velunexorai)
+        n = len(num)
         E = (n + 1) // 2   # number of even indices: 0,2,4,...
         O = n // 2         # number of odd indices: 1,3,5,...
 
         # frequency of each digit
-        freq = Counter(velunexorai)
+        freq = Counter(num)
 
         # precompute factorials and inverse factorials up to n
         fact = [1] * (n + 1)
