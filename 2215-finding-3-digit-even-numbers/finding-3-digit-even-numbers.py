@@ -1,18 +1,17 @@
+from typing import List
 from itertools import permutations
 
 class Solution:
     def findEvenNumbers(self, digits: List[int]) -> List[int]:
-        res = []
-        n = len(digits)
+        """
+        Finds all unique 3-digit even numbers that can be formed using digits from the input list.
+        Each digit can be used at most once in a number.
+        """
+        valid_numbers = set()
 
-        for i in range(n):
-            for j in range(i + 1, n):
-                for k in range(j + 1, n):
-                    candidate = [digits[i], digits[j], digits[k]]
-                    for perm in permutations(candidate):
-                        if perm[0] != 0 and perm[2] % 2 == 0:
-                            res.append(
-                                int("".join(map(str, perm)))
-                            )
-        
-        return list(sorted(set(res)))
+        for perm in permutations(digits, 3):
+            if perm[0] != 0 and perm[2] % 2 == 0:
+                number = perm[0] * 100 + perm[1] * 10 + perm[2]
+                valid_numbers.add(number)
+
+        return sorted(valid_numbers)
