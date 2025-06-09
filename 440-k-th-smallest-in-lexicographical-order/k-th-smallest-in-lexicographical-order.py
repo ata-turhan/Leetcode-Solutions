@@ -13,8 +13,8 @@ class Solution:
             return steps
 
         curr: int = 1  # Start from the first number (1)
-        k -= 1  # We need to find the (k+1)-th number, so decrement k by 1
-        
+        k -= 1  # We need to find the (k)-th number but we counted 1 already
+                
         # While there are still steps to take
         while k > 0:
             steps: int = calculate_steps(curr, curr + 1, n)
