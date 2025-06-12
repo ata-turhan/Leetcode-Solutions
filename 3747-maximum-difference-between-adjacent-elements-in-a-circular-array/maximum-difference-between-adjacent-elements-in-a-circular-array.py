@@ -1,9 +1,18 @@
+from typing import List
+
 class Solution:
     def maxAdjacentDistance(self, nums: List[int]) -> int:
-        max_dist = abs(nums[0] - nums[-1])
+        """
+        Returns the maximum absolute difference between adjacent elements
+        including the edge case between the first and last elements.
+        """
+        if not nums or len(nums) < 2:
+            return 0  # No distance to measure
 
-        for i in range(len(nums) - 1):
-            max_dist = max(max_dist, abs(nums[i + 1] - nums[i]))
+        max_distance: int = abs(nums[0] - nums[-1])
 
-        return max_dist
-        
+        for i in range(1, len(nums)):
+            current_distance = abs(nums[i] - nums[i - 1])
+            max_distance = max(max_distance, current_distance)
+
+        return max_distance
