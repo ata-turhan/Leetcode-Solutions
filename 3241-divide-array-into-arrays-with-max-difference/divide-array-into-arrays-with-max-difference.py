@@ -1,11 +1,22 @@
+from typing import List
+
 class Solution:
     def divideArray(self, nums: List[int], k: int) -> List[List[int]]:
+        """
+        Divides the input array into groups of 3 such that
+        the difference between the max and min in each group is <= k.
+        Returns an empty list if it's not possible.
+        """
         if len(nums) % 3 != 0:
             return []
+
         nums.sort()
-        res = []
+        grouped_subarrays: List[List[int]] = []
+
         for i in range(0, len(nums), 3):
-            if nums[i+2] - nums[i] > k:
+            group = nums[i:i+3]
+            if group[2] - group[0] > k:
                 return []
-            res.append(nums[i:i+3])
-        return res
+            grouped_subarrays.append(group)
+
+        return grouped_subarrays
