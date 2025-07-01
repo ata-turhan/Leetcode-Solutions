@@ -1,15 +1,16 @@
 class Solution:
     def possibleStringCount(self, word: str) -> int:
-        freqs = []
+        total_combs = 1
         cur_freq = 1
+        
         for i in range(1, len(word)):
             if word[i] == word[i - 1]:
                 cur_freq += 1
             else:
-                freqs.append(cur_freq)
+                total_combs += cur_freq - 1
                 cur_freq = 1
 
-        freqs.append(cur_freq)
+        total_combs += cur_freq - 1
 
-        return sum(val - 1 for val in freqs) + 1
+        return total_combs
         
