@@ -2,11 +2,6 @@ from typing import List
 
 class Solution:
     def possibleStringCount(self, word: str) -> int:
-        """
-        Count the total number of substrings where adjacent characters are the same.
-        For each consecutive sequence of identical characters of length `n`, 
-        there are (n - 1) such substrings.
-        """
         total_count: int = 1  # Start with 1 for the first character
         run_length: int = 1
 
